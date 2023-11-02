@@ -22,6 +22,6 @@ new Command({
             {name: "Author", value: "DaneeSkripter", inline: true},
         )
         .setColor("Random")
-        ctx.reply({embeds: [embed]})
+        ctx.reply({embeds: [embed], ephemeral: true})
     }
 });
