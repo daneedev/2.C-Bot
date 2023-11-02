@@ -60,6 +60,7 @@ new Command({
         .setDescription(`${answera} - ${votesA.toString()} hlasů\n${answerb} - ${votesB.toString()} hlasů`)
         .setColor("Random")
         .setFooter({text: `Hlasování končí za ${ms(ms(time), {long: true})}`})
+        .setAuthor({name: ctx.user.username, iconURL: ctx.user.avatarURL()})
         let mainmsg;
         ctx.channel.send({embeds: [mainembed], components: [row]}).then(msg => { mainmsg = msg})
         const collector = ctx.channel.createMessageComponentCollector({componentType: Discord.ComponentType.Button, time: ms(time)})
@@ -76,6 +77,7 @@ new Command({
                 .setTitle(question)
                 .setFooter({text: `Hlasování končí za ${ms(ms(time), {long: true})}`})
                 .setColor("Random")
+                .setAuthor({name: ctx.user.username, iconURL: ctx.user.avatarURL()})
                 if (i.customId == "buttonA") {
                     votesA++
                     embed.setDescription(`${answera} - ${votesA.toString()} hlasů\n${answerb} - ${votesB.toString()} hlasů`)
@@ -90,6 +92,7 @@ new Command({
         collector.on("end", i => {
             const newembed = new Discord.EmbedBuilder()
             .setTitle(question)
+            .setAuthor({name: ctx.user.username, iconURL: ctx.user.avatarURL()})
             .setDescription(`${answera} - ${votesA.toString()} hlasů\n${answerb} - ${votesB.toString()} hlasů`)
             .setColor("Red")
             .setFooter({text: `Hlasování skončilo`})
