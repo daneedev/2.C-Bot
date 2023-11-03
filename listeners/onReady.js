@@ -17,6 +17,6 @@ new Listener({
 	client.user.setActivity(zaci[Math.floor(Math.random() * zaci.length)], {type: ActivityType.Watching})
 		setInterval(function () {
 			client.user.setActivity(zaci[Math.floor(Math.random() * zaci.length)], {type: ActivityType.Watching})
-		}, 1000 * 60)
+		}, 1000 * 60 * 60)
     }
 });
