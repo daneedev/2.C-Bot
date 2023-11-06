@@ -37,6 +37,7 @@ new Command({
         const answera = ctx.arguments.getString('answera')
         const answerb = ctx.arguments.getString('answerb')
         const time = ctx.arguments.getString('time')
+        if (time.includes("d") || time.includes("h") || time.includes("m")) {
         const buttonA = new Discord.ButtonBuilder()
         .setCustomId("buttonA")
         .setLabel(answera)
@@ -55,6 +56,7 @@ new Command({
         .setTitle("Hlasování bylo spuštěno")
         .setColor("Random")
         ctx.reply({embeds: [reply], ephemeral: true})
+        
         const mainembed = new Discord.EmbedBuilder()
         .setTitle(question)
         .setDescription(`${answera} - ${votesA.toString()} hlasů\n${answerb} - ${votesB.toString()} hlasů`)
@@ -100,5 +102,12 @@ new Command({
             row.components[1].setDisabled(true)
             mainmsg.edit({embeds: [newembed], components: [row]})
         })
+    } else {
+        const error = new Discord.EmbedBuilder()
+        .setTitle("Čas musí být v podporovaném formátu")
+        .setDescription("**Podporované formáty času:**\n**1 den** - 1d\n**1 hodina** - 1h\n**1 minuta** - 1m")
+        .setColor("Red")
+        ctx.reply({embeds: [error], ephemeral: true})
+    }
     }
 });
