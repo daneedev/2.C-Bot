@@ -28,7 +28,7 @@ const client = new GClient({
 	],
 	messageSupport: false,
 	devGuildId: process.env.DEV_SERVER,
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
 client.login(process.env.TOKEN);
