@@ -26,9 +26,5 @@ new Listener({
                 message.reply("🍚")
             }
         })
-        if (list.includes(message.content)) {
-            message.reply("🙋🏿‍♂️")
-        } else if (list2.includes(message.content)) {
-        }
     }
 });
