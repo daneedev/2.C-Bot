@@ -9,21 +9,21 @@ new Listener({
 	// The function thats called when the event occurs
 	run: (message) => {
         const list = ["negr", "nigger", "nigga", "cernoch"]
-        const list2 = ["uwu", "oniichan", "onichan", "mnau", "sablo", "sablik"]
+        const list2 = ["uwu", "oniichan", "onichan", "mnau", "sablo", "sablik", "siblik"]
         const list3 = ["cinan", "vietnamec", "japonec", "zluty", "cingcong", "ching chong"]
         list.forEach((item) => {
             if (message.content.includes(item)) {
-                message.reply("🙋🏿‍♂️")
+                message.react("🙋🏿‍♂️")
             }
         })
         list2.forEach((item) => {
             if (message.content.includes(item)) {
-                message.reply("👀")
+                message.react("👀")
             }
         })
         list3.forEach((item) => {
             if (message.content.includes(item)) {
-                message.reply("🍚")
+                message.react("🍚")
             }
         })
     }
