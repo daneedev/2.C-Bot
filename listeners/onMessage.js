@@ -12,17 +12,17 @@ new Listener({
         const list2 = ["uwu", "oniichan", "onichan", "mnau", "sablo", "sablik", "siblik"]
         const list3 = ["cinan", "vietnamec", "japonec", "zluty", "cingcong", "ching chong"]
         list.forEach((item) => {
-            if (message.content.includes(item)) {
+            if (message.content.toLowerCase().includes(item)) {
                 message.react("🙋🏿‍♂️")
             }
         })
         list2.forEach((item) => {
-            if (message.content.includes(item)) {
+            if (message.content.toLowerCase().includes(item)) {
                 message.react("👀")
             }
         })
         list3.forEach((item) => {
-            if (message.content.includes(item)) {
+            if (message.content.toLowerCase().includes(item)) {
                 message.react("🍚")
             }
         })
