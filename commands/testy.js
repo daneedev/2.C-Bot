@@ -16,26 +16,25 @@ new Command({
     ],
 	run: (ctx) => {
         const datum = ctx.arguments.getString("datum")
-        const dnesniDate = new Date()
+        const zitraDate = new Date()
         const testy = JSON.parse(fs.readFileSync("./data/testy.json"))
-        const dnesniDatum = `${dnesniDate.getDate()}.${dnesniDate.getMonth() + 1}.${dnesniDate.getFullYear()}`
+        const zitraDatum = `${zitraDate.getDate() + 1}.${zitraDate.getMonth() + 1}.${zitraDate.getFullYear()}`
         if (!datum) {
-            const dnesniTesty = testy.filter((test) => test.datum == dnesniDatum)
-            const dnesniTesty2 = testy.find((test) => test.datum == dnesniDatum)
-            if (!dnesniTesty2) {
+            const zitraTesty = testy.filter((test) => test.datum == zitraDatum)
+            const zitraTesty2 = testy.find((test) => test.datum == zitraDatum)
+            if (!zitraTesty2) {
                 const embed = new EmbedBuilder()
-                .setTitle(`Dnešní testy`)
-                .setDescription("Dnes se nekonají žádné testy")
+                .setTitle(`Zítřejší testy`)
+                .setDescription("Zítra se nekonají žádné testy")
                 .setColor("Random")
                 ctx.reply({embeds: [embed]})
             } else {
                 let testyString = ""
-                dnesniTesty.forEach((test) => {
-                    console.log(test.predmet)
+                zitraTesty.forEach((test) => {
                     testyString = `${testyString}\n**${test.predmet}**: ${test.tema}`
                 })
                 const embed = new EmbedBuilder()
-                .setTitle(`Dnešní testy`)
+                .setTitle(`Zítřejší testy`)
                 .setDescription(testyString)
                 .setColor("Random")
                 ctx.reply({embeds: [embed]})
