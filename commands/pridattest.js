@@ -96,6 +96,9 @@ new Command({
         const testy = JSON.parse(fs.readFileSync("./data/testy.json"))
         testy.push(test)
         fs.writeFileSync("./data/testy.json", JSON.stringify(testy, null, 4))
-        ctx.reply("test")
+        const embed = new EmbedBuilder()
+        .setTitle("Test přidán!")
+        .setColor("Green")
+        ctx.reply({embeds: [embed], ephemeral: true})
     }
 });
