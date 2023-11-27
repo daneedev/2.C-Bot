@@ -1,3 +1,7 @@
+# Transcriptions
+transcriptions/*.txt
+!transcriptions
+
 # Logs
 logs
 *.log
