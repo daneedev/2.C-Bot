@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGODB, {
 Component.setDefaults({
 	onError: (ctx, error) => {
 		return ctx.reply('Oops! Something went wrong')
-	} 
+	}
 });
 
 
@@ -28,7 +28,7 @@ const client = new GClient({
 	],
 	messageSupport: false,
 	devGuildId: process.env.DEV_SERVER,
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent], // !! IMPORTANT !! Uncomment these original intents before running in production
 });
 
 client.login(process.env.TOKEN);
