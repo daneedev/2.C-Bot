@@ -6,7 +6,7 @@ const ms = require("ms")
 const package = require("../package.json")
 
 function transcribe(videoUrl) {
-    const pythonScriptPath = '../path/to/your/script.py';
+    const pythonScriptPath = '../yt_transcriptor/main.py';
     const pythonScriptArguments = [videoUrl, 'lang=cs-CZ'];
 
     const result = spawnSync('python', [pythonScriptPath, ...pythonScriptArguments]);
