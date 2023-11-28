@@ -66,7 +66,7 @@ def get_transcript(url, language):
 
     clear_dir('temp_dir')
 
-    return name, transcript
+    return name + language.split('-')[0], transcript
 
 def save_transcript(name, transcript):
     file_path = os.path.join(get_folder('output_dir'), f'{name}.txt')

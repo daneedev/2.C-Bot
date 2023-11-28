@@ -2,10 +2,10 @@ const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { spawnSync } = require('child_process');
 const fs = require('fs');
 
-function transcribe(videoUrl, language = 'cs-CZ') {
+function transcribe(videoUrl, language) {
     return new Promise((resolve, reject) => {
         const pythonScriptPath = 'yt-transcriptor/main.py';
-        const pythonScriptArguments = [videoUrl, 'lang=' + language];
+        const pythonScriptArguments = [videoUrl, 'lang=' + language || 'cs-CZ'];
 
         console.log(fs.existsSync(pythonScriptPath) ? "Python script found" : "Python script not found");
 
@@ -49,12 +49,13 @@ new Command({
     run: async (ctx) => {
         const videoUrl = ctx.arguments.getString('url');
         const videoId = videoUrl.split('v=')[1];
+        const language = ctx.arguments.getString('language') || 'cs-CZ';
 
         if (videoId.includes("&")) {
             videoId = videoId.split("&")[0]
         }
 
-        const filePath = './transcriptions/' + videoId + '.txt';
+        const filePath = './transcriptions/' + videoId + language.split('-')[0] + '.txt';
 
         // Check if the video has already been transcribed
         if (!fs.existsSync(filePath)) {
@@ -67,7 +68,7 @@ new Command({
 
             try {
                 // Transcribe the video
-                await transcribe(videoUrl);
+                await transcribe(videoUrl, language);
 
                 console.log('Sending transcriptions for video URL');
                 await ctx.editReply({
@@ -83,7 +84,7 @@ new Command({
             }
         } else {
             await ctx.deferReply({
-                content: 'Getting transcriptions for vide. This may take a while...',
+                content: 'Getting transcriptions for video. This may take a while...',
                 ephemeral: true,
             });
 
