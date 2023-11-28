@@ -24,17 +24,8 @@ function transcribe(videoUrl, language = 'cs-CZ') {
     });
 }
 
-async function sendTranscriptions(ctx, filePath, videoUrl) {
-    // Send the transcriptions as a text file
-    console.log('Sending transcriptions for video URL "' + videoUrl + '"');
-    await ctx.editReply({
-        content: 'Transcriptions for video URL "' + videoUrl + '"',
-        files: [filePath],
-        ephemeral: false,
-    });
-}
 new Command({
-    name: 'transcript',
+    name: 'transcribe',
     description: 'Get transcriptions of a YouTube video',
 
     type: [CommandType.SLASH],
@@ -67,11 +58,10 @@ new Command({
 
         // Check if the video has already been transcribed
         if (!fs.existsSync(filePath)) {
-            console.log('Transcribing video URL "' + videoUrl + '". This may take a while...');
+            console.log('Transcribing video. This may take a while...');
 
-            // send a message in the server
             await ctx.deferReply({
-                content: 'Transcribing video URL "' + videoUrl + '". This may take a while...',
+                content: 'Transcribing video. This may take a while...',
                 ephemeral: true,
             });
 
@@ -79,9 +69,9 @@ new Command({
                 // Transcribe the video
                 await transcribe(videoUrl);
 
-                console.log('Sending transcriptions for video URL "' + videoUrl + '"');
+                console.log('Sending transcriptions for video URL');
                 await ctx.editReply({
-                    content: 'Transcriptions for video URL "' + videoUrl + '"',
+                    content: 'Transcriptions for video:',
                     files: [filePath],
                     ephemeral: false,
                 });
@@ -93,13 +83,13 @@ new Command({
             }
         } else {
             await ctx.deferReply({
-                content: 'Getting transcriptions for video URL "' + videoUrl + '". This may take a while...',
+                content: 'Getting transcriptions for vide. This may take a while...',
                 ephemeral: true,
             });
 
-            console.log('Sending transcriptions for video URL "' + videoUrl + '"');
+            console.log('Sending transcriptions for video');
             await ctx.editReply({
-                content: 'Transcriptions for video URL "' + videoUrl + '"',
+                content: 'Transcriptions for video:"',
                 files: [filePath],
                 ephemeral: false,
             });
