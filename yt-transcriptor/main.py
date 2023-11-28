@@ -12,7 +12,7 @@ except ImportError:
 if not os.path.exists('config.json'):
     raise Exception("Config file not found.")
 
-config = json.load(open('yt_transcriptor/transcriptor-config.json'))
+config = json.load(open('.\\yt-transcriptor\\transcriptor-config.json'))
 
 USER = os.path.expanduser("~")
 ARG = sys.argv[1] if len(sys.argv) > 1 else None

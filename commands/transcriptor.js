@@ -1,30 +1,38 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
-const { EmbedBuilder } = require('discord.js');
 const { spawnSync } = require('child_process');
 const fs = require('fs');
-const ms = require("ms")
-const package = require("../package.json")
 
-function transcribe(videoUrl, language='cs-CZ') {
-    const pythonScriptPath = 'yt-transcriptor/main.py';
-    const pythonScriptArguments = [videoUrl, 'lang='+language];
+function transcribe(videoUrl, language = 'cs-CZ') {
+    return new Promise((resolve, reject) => {
+        const pythonScriptPath = 'yt-transcriptor/main.py';
+        const pythonScriptArguments = [videoUrl, 'lang=' + language];
 
-    console.log(fs.existsSync(pythonScriptPath) ? "Python script found" : "Python script not found");
+        console.log(fs.existsSync(pythonScriptPath) ? "Python script found" : "Python script not found");
 
-    console.log("Running Python script with arguments:", pythonScriptArguments);
+        console.log("Running Python script with arguments:", pythonScriptArguments);
 
-    const result = spawnSync('python', [pythonScriptPath, ...pythonScriptArguments], { stdio: 'inherit' });
+        const result = spawnSync('python', [pythonScriptPath, ...pythonScriptArguments], { stdio: 'inherit' });
 
-    console.log("Python script finished with code:", result.status)
+        console.log("Python script finished with code:", result.status);
 
-    if (result.error) {
-        console.error('Error calling Python script:', result.error);
-        return false;
-    }
-
-    return true;
+        if (result.error) {
+            console.error('Error calling Python script:', result.error);
+            reject(new Error('An error occurred while transcribing the video.'));
+        } else {
+            resolve();
+        }
+    });
 }
 
+async function sendTranscriptions(ctx, filePath, videoUrl) {
+    // Send the transcriptions as a text file
+    console.log('Sending transcriptions for video URL "' + videoUrl + '"');
+    await ctx.editReply({
+        content: 'Transcriptions for video URL "' + videoUrl + '"',
+        files: [filePath],
+        ephemeral: false,
+    });
+}
 new Command({
     name: 'transcript',
     description: 'Get transcriptions of a YouTube video',
@@ -47,8 +55,7 @@ new Command({
         }),
     ],
 
-    run: (ctx) => {
-        // Get the video ID, URL and file path
+    run: async (ctx) => {
         const videoUrl = ctx.arguments.getString('url');
         const videoId = videoUrl.split('v=')[1];
 
@@ -61,29 +68,41 @@ new Command({
         // Check if the video has already been transcribed
         if (!fs.existsSync(filePath)) {
             console.log('Transcribing video URL "' + videoUrl + '". This may take a while...');
-            ctx.reply({
+
+            // send a message in the server
+            await ctx.deferReply({
                 content: 'Transcribing video URL "' + videoUrl + '". This may take a while...',
                 ephemeral: true,
             });
 
-            // Transcribe the video
-            const success = transcribe(videoUrl);
+            try {
+                // Transcribe the video
+                await transcribe(videoUrl);
 
-            if (!success) {
-                ctx.reply({
-                    content: 'An error occurred while transcribing the video URL "' + videoUrl + '".',
+                console.log('Sending transcriptions for video URL "' + videoUrl + '"');
+                await ctx.editReply({
+                    content: 'Transcriptions for video URL "' + videoUrl + '"',
+                    files: [filePath],
+                    ephemeral: false,
+                });
+            } catch (error) {
+                ctx.editReply({
+                    content: error.message || 'An error occurred while transcribing the video URL.',
                     ephemeral: true,
                 });
-                return;
             }
-        }
+        } else {
+            await ctx.deferReply({
+                content: 'Getting transcriptions for video URL "' + videoUrl + '". This may take a while...',
+                ephemeral: true,
+            });
 
-        // Send the transcriptions as a text file
-        console.log('Sending transcriptions for video URL "' + videoUrl + '"');
-        ctx.reply({
-            content: 'Transcriptions for video URL "' + videoUrl + '"',
-            files: [filePath],
-            ephemeral: true,
-        });
+            console.log('Sending transcriptions for video URL "' + videoUrl + '"');
+            await ctx.editReply({
+                content: 'Transcriptions for video URL "' + videoUrl + '"',
+                files: [filePath],
+                ephemeral: false,
+            });
+        }
     }
 });
