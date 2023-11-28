@@ -4,6 +4,9 @@ transcriptions/*.txt
 
 yt-transcriptor/temp
 
+# Pycache
+yt-transcriptor/__pycache__/
+
 # Logs
 logs
 *.log
