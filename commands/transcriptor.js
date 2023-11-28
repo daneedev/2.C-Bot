@@ -41,7 +41,7 @@ new Command({
     run: async (ctx) => {
         const videoUrl = ctx.arguments.getString('url');
 
-        if (!videoUrl.includes("v=") || !videoUrl.includes("youtu.be")) {
+        if (!videoUrl.includes("v=")) {
             ctx.reply('Invalid YouTube video URL.')
         }
 
