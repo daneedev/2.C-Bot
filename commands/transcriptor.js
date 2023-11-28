@@ -79,7 +79,7 @@ new Command({
             });
             console.log('Sending transcriptions for video');
             await ctx.editReply({
-                content: 'Transcriptions for video:"',
+                content: 'Transcriptions for video:',
                 files: [filePath],
                 ephemeral: false,
             });
