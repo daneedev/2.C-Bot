@@ -40,8 +40,26 @@ new Command({
 
     run: async (ctx) => {
         const videoUrl = ctx.arguments.getString('url');
+
+        if (videoUrl.length == 0) {
+            return
+        } else if (!videoUrl.includes("v=")) {
+            return
+        }
+
         const videoId = videoUrl.split('v=')[1];
+
+        if (videoId.length == 0) {
+            return
+        }
+
         const language = ctx.arguments.getString('language') || 'cs-CZ';
+
+        if (language.length == 0) {
+            return
+        } else if (language.length > 7) {
+            return
+        }
 
         if (videoId.includes("&")) {
             videoId = videoId.split("&")[0]
