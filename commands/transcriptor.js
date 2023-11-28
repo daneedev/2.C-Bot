@@ -6,15 +6,10 @@ function transcribe(videoUrl, language = 'cs-CZ') {
     return new Promise((resolve, reject) => {
         const pythonScriptPath = 'yt-transcriptor/main.py';
         const pythonScriptArguments = [videoUrl, 'lang=' + language];
-
         console.log(fs.existsSync(pythonScriptPath) ? "Python script found" : "Python script not found");
-
         console.log("Running Python script with arguments:", pythonScriptArguments);
-
         const result = spawnSync('python', [pythonScriptPath, ...pythonScriptArguments], { stdio: 'inherit' });
-
         console.log("Python script finished with code:", result.status);
-
         if (result.error) {
             console.error('Error calling Python script:', result.error);
             reject(new Error('An error occurred while transcribing the video.'));
@@ -27,9 +22,7 @@ function transcribe(videoUrl, language = 'cs-CZ') {
 new Command({
     name: 'transcribe',
     description: 'Get transcriptions of a YouTube video',
-
     type: [CommandType.SLASH],
-
     arguments: [
         new Argument({
             name: 'url',
@@ -37,7 +30,6 @@ new Command({
             type: ArgumentType.STRING,
             required: true
         }),
-
         new Argument({
             name: 'language',
             description: 'Default: cs-CZ',
@@ -59,7 +51,6 @@ new Command({
         // Check if the video has already been transcribed
         if (!fs.existsSync(filePath)) {
             console.log('Transcribing video. This may take a while...');
-
             await ctx.deferReply({
                 content: 'Transcribing video. This may take a while...',
                 ephemeral: true,
@@ -68,7 +59,6 @@ new Command({
             try {
                 // Transcribe the video
                 await transcribe(videoUrl);
-
                 console.log('Sending transcriptions for video URL');
                 await ctx.editReply({
                     content: 'Transcriptions for video:',
@@ -86,7 +76,6 @@ new Command({
                 content: 'Getting transcriptions for vide. This may take a while...',
                 ephemeral: true,
             });
-
             console.log('Sending transcriptions for video');
             await ctx.editReply({
                 content: 'Transcriptions for video:"',
