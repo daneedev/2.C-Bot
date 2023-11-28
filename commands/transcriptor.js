@@ -8,7 +8,7 @@ function transcribe(videoUrl, language) {
         const pythonScriptArguments = [videoUrl, 'lang=' + language || 'cs-CZ'];
         console.log(fs.existsSync(pythonScriptPath) ? "Python script found" : "Python script not found");
         console.log("Running Python script with arguments:", pythonScriptArguments);
-        const result = spawnSync('python', [pythonScriptPath, ...pythonScriptArguments], { stdio: 'inherit' });
+        const result = spawnSync('python3', [pythonScriptPath, ...pythonScriptArguments], { stdio: 'inherit' });
         console.log("Python script finished with code:", result.status);
         if (result.error) {
             console.error('Error calling Python script:', result.error);
@@ -41,9 +41,11 @@ new Command({
     run: async (ctx) => {
         const videoUrl = ctx.arguments.getString('url');
 
-        if (!videoUrl.includes("v=")) {
-            ctx.reply('Invalid YouTube video URL.')
-        }
+            if (!videoUrl.includes("v=")) {
+                ctx.reply('Invalid YouTube video URL.')
+            } else {
+
+            
 
         const videoId = videoUrl.split('v=')[1];
 
@@ -70,7 +72,6 @@ new Command({
             console.log('Transcribing video. This may take a while...');
             await ctx.deferReply({
                 content: 'Transcribing video. This may take a while...',
-                ephemeral: true,
             });
 
             try {
@@ -78,27 +79,29 @@ new Command({
                 await transcribe(videoUrl, language);
                 console.log('Sending transcriptions for video URL');
                 await ctx.editReply({
-                    content: 'Transcriptions for video:',
+                    content: `Transcriptions for video:`,
                     files: [filePath],
-                    ephemeral: false,
+                }).then((msg) => {
+                    msg.reply(`<@${ctx.user.id}>`)
                 });
             } catch (error) {
                 ctx.editReply({
                     content: error.message || 'An error occurred while transcribing the video URL.',
-                    ephemeral: true,
+                    ephemeral: true
                 });
             }
         } else {
             await ctx.deferReply({
                 content: 'Getting transcriptions for video. This may take a while...',
-                ephemeral: true,
             });
             console.log('Sending transcriptions for video');
             await ctx.editReply({
-                content: 'Transcriptions for video:',
+                content: `Transcriptions for video:`,
                 files: [filePath],
-                ephemeral: false,
+            }).then((msg) => {
+                msg.reply(`<@${ctx.user.id}>`)
             });
         }
+    }
     }
 });

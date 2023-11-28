@@ -5,7 +5,7 @@ from colorama import Fore
 import os, json
 
 print(os.getcwd())
-config = json.load(open('.\\yt-transcriptor\\transcriptor-config.json'))
+config = json.load(open('./yt-transcriptor/transcriptor-config.json'))
 
 def transcribe_large_audio(audio_file_path, temp_path="", language=config["default_lang"], chunk_duration_ms=60000):
     temp_chunk = os.path.join(temp_path, "temp_chunk.wav")
