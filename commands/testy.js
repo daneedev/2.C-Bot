@@ -8,20 +8,28 @@ new Command({
 	type: [CommandType.SLASH, CommandType.MESSAGE],
     arguments: [
         new Argument({
-            name: 'datum',
-            description: 'Datum, pro které chceš zjistit testy',
-            type: ArgumentType.STRING,
+            name: 'den',
+            description: 'Den, pro které chceš zjistit testy',
+            type: ArgumentType.INTEGER,
+            required: false
+        }),
+        new Argument({
+            name: 'mesic',
+            description: 'Měsíc, pro které chceš zjistit testy',
+            type: ArgumentType.INTEGER,
             required: false
         })
     ],
 	run: (ctx) => {
-        const datum = ctx.arguments.getString("datum")
+        const den = ctx.arguments.getInteger("den")
+        const mesic = ctx.arguments.getInteger("mesic")
         const zitraDate = new Date()
         const testy = JSON.parse(fs.readFileSync("./data/testy.json"))
-        const zitraDatum = `${zitraDate.getDate() + 1}.${zitraDate.getMonth() + 1}.${zitraDate.getFullYear()}`
-        if (!datum) {
-            const zitraTesty = testy.filter((test) => test.datum == zitraDatum)
-            const zitraTesty2 = testy.find((test) => test.datum == zitraDatum)
+        const zitraDen = zitraDate.getDate()
+        const zitraMesic = zitraDate.getMonth() + 1
+        if (!den && !mesic) {
+            const zitraTesty = testy.filter((test) => test.den == zitraDen && test.mesic == zitraMesic)
+            const zitraTesty2 = testy.find((test) => test.den == zitraDen && test.mesic == zitraMesic)
             if (!zitraTesty2) {
                 const embed = new EmbedBuilder()
                 .setTitle(`Zítřejší testy`)
@@ -38,14 +46,27 @@ new Command({
                 .setDescription(testyString)
                 .setColor("Random")
                 ctx.reply({embeds: [embed]})
-            }
+        }
         } else {
-            const testyDatum = testy.filter((test) => test.datum == datum)
-            const testyDatum2 = testy.find((test) => test.datum == datum)
+            if (mesic > 12) {
+                const embed = new EmbedBuilder()
+                .setTitle("Chyba")
+                .setDescription("Zadal jsi neplatný měsíc")
+                .setColor("Red")
+                ctx.reply({embeds: [embed], ephemeral: true})
+            } else if (den > 31) {
+                const embed = new EmbedBuilder()
+                .setTitle("Chyba")
+                .setDescription("Zadal jsi neplatný den")
+                .setColor("Red")
+                ctx.reply({embeds: [embed], ephemeral: true})
+            } else {
+            const testyDatum = testy.filter((test) => test.den == den && test.mesic == mesic)
+            const testyDatum2 = testy.find((test) => test.den == den && test.mesic == mesic)
             if (!testyDatum2) {
                 const embed = new EmbedBuilder()
-                .setTitle(`Testy ${datum}`)
-                .setDescription(`Dne ${datum} se nekonají žádné testy`)
+                .setTitle(`Testy ${den}.${mesic}`)
+                .setDescription(`Dne ${den}.${mesic} se nekonají žádné testy`)
                 .setColor("Random")
                 ctx.reply({embeds: [embed]})
             } else {
@@ -54,11 +75,12 @@ new Command({
                     testyString = `${testyString}\n**${test.predmet}**: ${test.tema}`
                 })
                 const embed = new EmbedBuilder()
-                .setTitle(`Testy ${datum}`)
+                .setTitle(`Testy ${den}.${mesic}`)
                 .setDescription(testyString)
                 .setColor("Random")
                 ctx.reply({embeds: [embed]})
             }
+        }
         }
     }
 });

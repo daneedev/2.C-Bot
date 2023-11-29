@@ -8,9 +8,15 @@ new Command({
 	type: [CommandType.SLASH, CommandType.MESSAGE],
     arguments: [
         new Argument({
-            name: 'datum',
-            description: 'Datum, pro které chceš přidat test',
-            type: ArgumentType.STRING,
+            name: 'den',
+            description: 'Den, pro které chceš přidat test',
+            type: ArgumentType.INTEGER,
+            required: true
+        }),
+        new Argument({
+            name: 'mesic',
+            description: 'Měsíc, pro které chceš přidat test',
+            type: ArgumentType.INTEGER,
             required: true
         }),
         new Argument({
@@ -85,11 +91,26 @@ new Command({
         })
     ],
 	run: (ctx) => {
-        const datum = ctx.arguments.getString("datum")
+        const den = ctx.arguments.getInteger("den")
+        const mesic = ctx.arguments.getInteger("mesic")
         const tema = ctx.arguments.getString("tema")
         const predmet = ctx.arguments.getString("predmet")
+        if (mesic > 12) {
+            const embed = new EmbedBuilder()
+            .setTitle("Chyba")
+            .setDescription("Zadal jsi neplatný měsíc")
+            .setColor("Red")
+            ctx.reply({embeds: [embed], ephemeral: true})
+        } else if (den > 31) {
+            const embed = new EmbedBuilder()
+            .setTitle("Chyba")
+            .setDescription("Zadal jsi neplatný den")
+            .setColor("Red")
+            ctx.reply({embeds: [embed], ephemeral: true})
+        } else {
         const test = {
-            datum: datum,
+            den: den,
+            mesic: mesic,
             tema: tema,
             predmet: predmet
         }
@@ -100,5 +121,6 @@ new Command({
         .setTitle("Test přidán!")
         .setColor("Green")
         ctx.reply({embeds: [embed], ephemeral: true})
+    }
     }
 });
