@@ -3,14 +3,6 @@ const { GClient, Plugins, Component, Command } = require('gcommands');
 const { GatewayIntentBits } = require('discord.js');
 const { join } = require('path');
 const config = require("./config.json")
-const mongoose = require("mongoose")
-
-mongoose.connect(process.env.MONGODB, {
-}).then(() =>[
-  console.log("Connected to the database!")
-]).catch((err) =>{
-  console.log('Failed connect to the database!')
-})
 Component.setDefaults({
 	onError: (ctx, error) => {
 		return ctx.reply('Oops! Something went wrong')
