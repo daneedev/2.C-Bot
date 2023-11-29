@@ -25,7 +25,7 @@ new Command({
         const mesic = ctx.arguments.getInteger("mesic")
         const zitraDate = new Date()
         const testy = JSON.parse(fs.readFileSync("./data/testy.json"))
-        const zitraDen = zitraDate.getDate()
+        const zitraDen = zitraDate.getDate() + 1
         const zitraMesic = zitraDate.getMonth() + 1
         if (!den && !mesic) {
             const zitraTesty = testy.filter((test) => test.den == zitraDen && test.mesic == zitraMesic)
