@@ -49,7 +49,6 @@ new Listener({
             }
         })
         list5.forEach((item) => {
-            console.log(message.content.toLowerCase().normalize("NFD"))
             if (message.content.toLowerCase().normalize("NFD").includes(item)) {
                 message.react("❤️")
             }
