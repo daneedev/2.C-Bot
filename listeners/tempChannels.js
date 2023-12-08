@@ -18,6 +18,18 @@ new Listener({
                         {
                             id: newState.member.id,
                             allow: [Discord.PermissionFlagsBits.ManageChannels, Discord.PermissionFlagsBits.ManageRoles]
+                        },
+                        {
+                            id: newState.guild.roles.everyone.id,
+                            deny: [Discord.PermissionFlagsBits.ViewChannel]
+                        },
+                        {
+                            id: "1148523115173904394",
+                            deny: [Discord.PermissionFlagsBits.ViewChannel]
+                        },
+                        {
+                            id: "1138125910353125548",
+                            allow: [Discord.PermissionFlagsBits.ViewChannel]
                         }
                     ]
                 }).then(c => {
