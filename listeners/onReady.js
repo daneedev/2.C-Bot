@@ -1,5 +1,7 @@
 const { Listener } = require('gcommands');
 const { ActivityType } = require("discord.js")
+let channels = require("../data/channels.json")
+const fs = require("fs");
 // Create a new listener listening to the "ready" event
 new Listener({
 	// Set the name for the listener
@@ -18,5 +20,16 @@ new Listener({
 		setInterval(function () {
 			client.user.setActivity(zaci[Math.floor(Math.random() * zaci.length)], {type: ActivityType.Watching})
 		}, 1000 * 60 * 60)
+		// TEMP CHANNELS
+		channels.forEach((c) => {
+			const findChannel = client.channels.cache.get(c.id)
+			if (findChannel && findChannel.members.size === 0) {
+				findChannel.delete()
+				channels = channels.filter(c => c.id !== findChannel.id)
+				fs.writeFile(__dirname + "/../data/channels.json", JSON.stringify(channels), (err) => {
+				if (err) console.log(err)
+			})
+			}
+		})
     }
 });
