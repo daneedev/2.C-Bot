@@ -20,7 +20,7 @@ const client = new GClient({
 	],
 	messageSupport: false,
 	devGuildId: process.env.DEV_SERVER,
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent], // !! IMPORTANT !! Uncomment these original intents before running in production
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates], // !! IMPORTANT !! Uncomment these original intents before running in production
 });
 
 client.login(process.env.TOKEN);
