@@ -7,7 +7,7 @@ new Command({
 	description: 'Napíše ti dnešní obědy',
 	// GCommands Next offers different types of commands, we will only use slash and message commands here.
 	type: [CommandType.SLASH, CommandType.MESSAGE],
-	cooldown: "60s",
+	cooldown: "10s",
 	// The function thats executed when the user uses the command.
 	run: (ctx) => {
 		if (ctx.channel.id != "1138207425263059097") {
