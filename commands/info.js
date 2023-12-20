@@ -15,7 +15,7 @@ new Command({
         .setTitle("Bot info")
         .addFields(
             {name: "Uptime", value: uptime, inline: true},
-            {name: "Ping", value: `${ctx.client.ws.ping} ms`, inline: true},
+            {name: "Ping", value: `${Math.floor((Date.now() - ctx.createdTimestamp) / 1000)} ms`, inline: true},
             {name: "Version", value: package.version, inline: true},
             {name: "Node.js version", value: process.version, inline: true},
             {name: "Discord.js version", value: package.dependencies["discord.js"], inline: true},
