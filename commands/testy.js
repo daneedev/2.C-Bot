@@ -48,16 +48,11 @@ new Command({
                 ctx.reply({embeds: [embed]})
         }
         } else {
-            if (mesic > 12) {
+            console.log(den, mesic)
+            if (mesic > 12 || den > 31 || mesic <= 0 || den <= 0) {
                 const embed = new EmbedBuilder()
                 .setTitle("Chyba")
-                .setDescription("Zadal jsi neplatný měsíc")
-                .setColor("Red")
-                ctx.reply({embeds: [embed], ephemeral: true})
-            } else if (den > 31) {
-                const embed = new EmbedBuilder()
-                .setTitle("Chyba")
-                .setDescription("Zadal jsi neplatný den")
+                .setDescription("Zadal jsi neplatný datum")
                 .setColor("Red")
                 ctx.reply({embeds: [embed], ephemeral: true})
             } else {
