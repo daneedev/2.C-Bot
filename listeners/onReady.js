@@ -14,8 +14,8 @@ new Listener({
 			"Vítka Adama", "Richarda Androsov", "Alisu Ataevu", "Vojtěcha Bendu", "Sebastiana Brože", "Vítka Chromce", "Magdalenu Dobešovou", "Jakuba Šejbu", "Bruna Fila", "Josefa Gondka", "Tadéáše Hrdinu", "Nataliu Ioninu",
 			"Adama Jakeše", "Filipa Jozífa", "Filipa Kalistu", "Aleše Knapa", "Richarda Kobzu", "Štěpána Koudelku",
 			"Daniela Kroufka", "Josefa Liegerta", "Vojtěcha Macha",
-			"Kristinu Migel", "Vojtěcha Musila", "Robina Oble", "Romana Paroubka", "Jaroslava Podhorného", "Lukáše Podhorného", "Nazariho Romanyuka", "Honzu Rožánka", "Marka Setikovského",
-			"Otto Tejkla", "Martina Trinh", "Alberta Waage"
+			"Kristinu Migel", "Vojtěcha Musila", "Robina Obleho 🙍🏿‍♂️", "Romana Paroubka", "Jaroslava Podhorného", "Lukáše Podhorného", "Nazariho Romanyuka", "Honzu Rožánka", "Marka Setikovského",
+			"Otto Tejkla", "Martina Trinha", "Alberta Waage"
 	]
 	let i = 0;
 	client.user.setActivity(zaci[i], {type: ActivityType.Watching})
