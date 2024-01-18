@@ -11,14 +11,20 @@ new Listener({
 	// The function thats called when the event occurs
 	run: (client) => {
 		const zaci = [
-		"Otto Tejkla", "Romana Paroubka", "Richarda Kobzu", "Vítka Adama", "Magdalenu Dobešovou", "Vojtěcha Bendu", "Bruna Fila", "Alberta Waage",
-		"Adama Jakeše", "Jaroslava Podhorného", "Sebastiana Brože", "Lukáše Podhorného", "Martina Trinh", "Robina Oble", "Honzu Rožánka", "Alisu Ataevu",
-		"Daniela Kroufka", "Aleše Knapa", "Josefa Gondka", "Marka Setikovského", "Tadéáše Hrdinu", "Richarda Androsov", "Filipa Jozífa", "Nataliu Ioninu",
-		"Kristinu Migel", "Vojtěcha Musila", "Vojtěcha Macha", "Josefa Liegerta", "Jakuba Šejbu", "Filipa Kalistu", "Vítka Chromce", "Štěpána Koudelku"
+			"Vítka Adama", "Richarda Androsov", "Alisu Ataevu", "Vojtěcha Bendu", "Sebastiana Brože", "Vítka Chromce", "Magdalenu Dobešovou", "Jakuba Šejbu", "Bruna Fila", "Josefa Gondka", "Tadéáše Hrdinu", "Nataliu Ioninu",
+			"Adama Jakeše", "Filipa Jozífa", "Filipa Kalistu", "Aleše Knapa", "Richarda Kobzu", "Štěpána Koudelku",
+			"Daniela Kroufka", "Josefa Liegerta", "Vojtěcha Macha",
+			"Kristinu Migel", "Vojtěcha Musila", "Robina Oble", "Romana Paroubka", "Jaroslava Podhorného", "Lukáše Podhorného", "Nazariho Romanyuka", "Honzu Rožánka", "Marka Setikovského",
+			"Otto Tejkla", "Martina Trinh", "Alberta Waage"
 	]
-	client.user.setActivity(zaci[Math.floor(Math.random() * zaci.length)], {type: ActivityType.Watching})
+	let i = 0;
+	client.user.setActivity(zaci[i], {type: ActivityType.Watching})
 		setInterval(function () {
-			client.user.setActivity(zaci[Math.floor(Math.random() * zaci.length)], {type: ActivityType.Watching})
+			i++
+			if (i === zaci.length) {
+				i = 0
+			}
+			client.user.setActivity(zaci[i], {type: ActivityType.Watching})
 		}, 1000 * 60 * 60)
 		// TEMP CHANNELS
 		channels.forEach((c) => {
