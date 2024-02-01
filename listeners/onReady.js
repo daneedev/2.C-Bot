@@ -2,6 +2,7 @@ const { Listener } = require('gcommands');
 const { ActivityType } = require("discord.js")
 let channels = require("../data/channels.json")
 const fs = require("fs");
+const names = 
 // Create a new listener listening to the "ready" event
 new Listener({
 	// Set the name for the listener
@@ -10,13 +11,7 @@ new Listener({
 	event: 'ready',
 	// The function thats called when the event occurs
 	run: (client) => {
-		const zaci = [
-			"Vítka Adama", "Richarda Androsov", "Alisu Ataevu", "Vojtěcha Bendu", "Sebastiana Brože", "Vítka Chromce", "Magdalenu Dobešovou", "Jakuba Šejbu", "Bruna Fila", "Josefa Gondka", "Tadéáše Hrdinu", "Nataliu Ioninu",
-			"Adama Jakeše", "Filipa Jozífa", "Filipa Kalistu", "Aleše Knapa", "Richarda Kobzu", "Štěpána Koudelku",
-			"Daniela Kroufka", "Josefa Liegerta", "Vojtěcha Macha",
-			"Kristinu Migel", "Vojtěcha Musila", "Robina Obleho 🙍🏿‍♂️", "Romana Paroubka", "Jaroslava Podhorného", "Lukáše Podhorného", "Nazariho Romanyuka", "Honzu Rožánka", "Marka Setikovského",
-			"Otto Tejkla", "Martina Trinha", "Alberta Waage"
-	]
+	const zaci = require("../data/names.json")
 	let i = 0;
 	client.user.setActivity(zaci[i], {type: ActivityType.Watching})
 		setInterval(function () {
