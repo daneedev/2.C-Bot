@@ -29,7 +29,7 @@ new Command({
                 .setTitle("Messages leaderboard")
                 .setColor("Random")
                 .setDescription(rankUsers(sortedUsers))
-                ctx.reply({embeds: [embed], ephemeral: true})
+                ctx.reply({embeds: [embed]})
             }
     }
 });
