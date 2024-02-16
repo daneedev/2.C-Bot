@@ -1,5 +1,7 @@
 const { Listener } = require('gcommands');
 const { ActivityType } = require("discord.js")
+const fs = require("fs");
+
 
 function countSpecialCharacters(inputString) {
     const specialCharacters = [".", ",", "á", "é", "í", "ó", "ů", "ú", "ž", "š", "č", "ř", "ď", "ť", "ň", "ě"];
@@ -57,5 +59,23 @@ new Listener({
         if (count > 15) {
             message.react("💀")
         }
+        
+        let messages = JSON.parse(fs.readFileSync(__dirname + "/../data/messages.json"))
+        const oldmessage = messages.find(msg => msg.user === message.author.id)
+        let obj;
+        if (oldmessage) {
+         messages = messages.filter(msg => msg.user !== message.author.id)
+         obj = {
+            user: message.author.id,
+            count: oldmessage.count + 1
+        }
+        } else {
+        obj = {
+                user: message.author.id,
+                count: 1
+            }
+        }
+        messages.push(obj)
+        fs.writeFileSync(__dirname + "/../data/messages.json", JSON.stringify(messages, null, 4))
     }
 });
