@@ -60,6 +60,7 @@ new Listener({
             message.react("💀")
         }
         
+        if (!message.author.bot) {
         let messages = JSON.parse(fs.readFileSync(__dirname + "/../data/messages.json"))
         const oldmessage = messages.find(msg => msg.user === message.author.id)
         let obj;
@@ -77,5 +78,6 @@ new Listener({
         }
         messages.push(obj)
         fs.writeFileSync(__dirname + "/../data/messages.json", JSON.stringify(messages, null, 4))
+    }
     }
 });
