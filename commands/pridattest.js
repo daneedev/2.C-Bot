@@ -1,6 +1,7 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { EmbedBuilder } = require('discord.js');
 const fs = require("fs")
+const Test = require("../models/Test")
 
 new Command({
 	name: 'pridattest',
@@ -108,15 +109,7 @@ new Command({
             .setColor("Red")
             ctx.reply({embeds: [embed], ephemeral: true})
         } else {
-        const test = {
-            den: den,
-            mesic: mesic,
-            tema: tema,
-            predmet: predmet
-        }
-        const testy = JSON.parse(fs.readFileSync("./data/testy.json"))
-        testy.push(test)
-        fs.writeFileSync("./data/testy.json", JSON.stringify(testy, null, 4))
+        Test.create({den: den, mesic: mesic, predmet: predmet, tema: tema})
         const embed = new EmbedBuilder()
         .setTitle("Test přidán!")
         .setColor("Green")
