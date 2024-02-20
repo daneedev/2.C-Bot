@@ -2,7 +2,11 @@ require('dotenv').config();
 const { GClient, Plugins, Component, Command } = require('gcommands');
 const { GatewayIntentBits } = require('discord.js');
 const { join } = require('path');
-const config = require("./config.json")
+const sequelize = require('./database');
+
+// SYNC DB
+sequelize.sync().then(() => console.log("Database is ready!"))
+
 Component.setDefaults({
 	onError: (ctx, error) => {
 		return ctx.reply('Oops! Something went wrong')
