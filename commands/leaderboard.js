@@ -1,6 +1,7 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { EmbedBuilder, ChannelType } = require('discord.js');
 const fs = require('fs');
+const User = require('../models/User');
 
 new Command({
 	name: 'leaderboard',
@@ -23,8 +24,8 @@ new Command({
 	run: async (ctx) => {
             const type = ctx.arguments.getString("type")
             if (type === "msg") {
-                const users = JSON.parse(fs.readFileSync(__dirname + "/../data/messages.json"))
-                const sortedUsers = users.sort((a, b) => b.count - a.count)
+                const users = await User.findAll()
+                const sortedUsers = users.sort((a, b) => b.dataValues.pocetZprav - a.dataValues.pocetZprav)
                 const embed = new EmbedBuilder()
                 .setTitle("Messages leaderboard")
                 .setColor("Random")
@@ -42,15 +43,15 @@ function rankUsers(users) {
     let winners = 0
     let ranktext = ""
     users.forEach(user => {
-        if (user.count != previousScore) {
+        if (user.dataValues.pocetZprav != previousScore) {
             if (winners < 3) {
                 rank += 1
-                previousScore = user.count
+                previousScore = user.dataValues.pocetZprav
             } else {
                 return;
             }
         }
-        ranktext += `**${rank}. místo** <@${user.user}> - ${user.count} zpráv\n`
+        ranktext += `**${rank}. místo** <@${user.dataValues.discordId}> - ${user.dataValues.pocetZprav} zpráv\n`
         ranktext = ranktext.replace("1.", "🥇").replace("2.", "🥈").replace("3.", "🥉")
         winners += 1
 

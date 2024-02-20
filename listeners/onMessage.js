@@ -1,6 +1,6 @@
 const { Listener } = require('gcommands');
 const { ActivityType } = require("discord.js")
-const fs = require("fs");
+const User = require("../models/User")
 
 
 function countSpecialCharacters(inputString) {
@@ -24,7 +24,7 @@ new Listener({
 	// Set the event to listen to
 	event: 'messageCreate',
 	// The function thats called when the event occurs
-	run: (message) => {
+	run: async (message) => {
         const list = ["negr", "nigger", "nigga", "cernoch"]
         const list2 = ["uwu", "oniichan", "onichan", "mnau", "sablo", "sablik", "siblik"]
         const list3 = ["cinan", "vietnamec", "japonec", "zluty", "cingcong", "ching chong"]
@@ -61,23 +61,13 @@ new Listener({
         }
         
         if (!message.author.bot) {
-        let messages = JSON.parse(fs.readFileSync(__dirname + "/../data/messages.json"))
-        const oldmessage = messages.find(msg => msg.user === message.author.id)
-        let obj;
-        if (oldmessage) {
-         messages = messages.filter(msg => msg.user !== message.author.id)
-         obj = {
-            user: message.author.id,
-            count: oldmessage.count + 1
-        }
-        } else {
-        obj = {
-                user: message.author.id,
-                count: 1
+            const findUser = await User.findOne({where: {discordId: message.author.id}})
+            if (findUser) {
+                findUser.pocetZprav += 1
+                findUser.save()
+            } else {
+                User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1})
             }
         }
-        messages.push(obj)
-        fs.writeFileSync(__dirname + "/../data/messages.json", JSON.stringify(messages, null, 4))
-    }
     }
 });
