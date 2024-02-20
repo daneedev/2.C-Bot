@@ -28,7 +28,7 @@ new Command({
         const zitraMesic = zitraDate.getMonth() + 1
         if (!den && !mesic) {
             const zitraTesty = await Test.findAll({where: {den: zitraDen, mesic: zitraMesic}})
-            if (!zitraTesty) {
+            if (!zitraTesty.length >= 1) {
                 const embed = new EmbedBuilder()
                 .setTitle(`Zítřejší testy`)
                 .setDescription("Zítra se nekonají žádné testy")
@@ -54,7 +54,7 @@ new Command({
                 ctx.reply({embeds: [embed], ephemeral: true})
             } else {
             const testyDatum = await Test.findAll({where: {den: den, mesic: mesic}})
-            if (!testyDatum) {
+            if (!testyDatum.length >= 1) {
                 const embed = new EmbedBuilder()
                 .setTitle(`Testy ${den}.${mesic}`)
                 .setDescription(`Dne ${den}.${mesic} se nekonají žádné testy`)
