@@ -12,7 +12,7 @@ new Command({
 	run: async(ctx) => {
         const message = ctx.arguments.getMessage("message")
         const findHlaska = await Hlaska.findOne({where: {messageId: message.id}})
-        if (message.channel.id !== "1174347873001943050") {
+        if (message.channel.id !== "1151842838695387166") {
             const error = new EmbedBuilder()
             .setTitle("Tento příkaz lze použít pouze v kanálu #hlasky")
             .setColor("Red")
@@ -24,7 +24,7 @@ new Command({
             ctx.reply({embeds: [error], ephemeral: true})
         } else {
             const zapisovatel = message.author.id
-            const autor = message.content.split(" - ")[1]
+            const autor = message.content.split(" - ")[1].split(" ")
             if (!autor) {
                 const error = new EmbedBuilder()
                 .setTitle("Nesprávný formát hlášky")
@@ -32,7 +32,7 @@ new Command({
                 .setColor("Red")
                 ctx.reply({embeds: [error], ephemeral: true})
                 return
-            } else if (autor.includes("<@")) {
+            } else if (autor.startsWith("<@") && autor.endsWith(">")) {
                 const findAutor = await User.findOne({where: {discordId: autor.replace("<@", "").replace(">", "")}})
                 if (findAutor) {
                     findAutor.pocetHlasek += 1
