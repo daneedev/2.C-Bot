@@ -1,7 +1,8 @@
 const { Listener } = require('gcommands');
 const { ActivityType } = require("discord.js")
 const User = require("../models/User")
-
+const Hlaska = require("../models/Hlaska")
+const { EmbedBuilder } = require('discord.js');
 
 function countSpecialCharacters(inputString) {
     const specialCharacters = [".", ",", "á", "é", "í", "ó", "ů", "ú", "ž", "š", "č", "ř", "ď", "ť", "ň", "ě"];
@@ -68,6 +69,42 @@ new Listener({
             } else {
                 User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1})
             }
+        }
+
+        // HLASKA LEADERBOARD
+        if (message.channel.id === "1174347873001943050") {
+            const zapisovatel = message.author.id
+            if (message.author.bot) return
+            let autor = message.content.split(" - ")[1]
+            if (autor && autor.includes(" ")) autor = autor.split(" ")[0]
+            if (!autor) {
+                return
+            } else if (autor.startsWith("<@") && autor.endsWith(">")) {
+                const findAutor = await User.findOne({where: {discordId: autor.replace("<@", "").replace(">", "")}})
+                if (findAutor) {
+                    findAutor.pocetHlasek += 1
+                    findAutor.save()
+                } else {
+                    User.create({discordId: autor.replace("<@", "").replace(">", ""), pocetHlasek: 1, pocetZapisu: 0, pocetZprav: 0})
+                }
+            } else {
+                const findAutor = await User.findOne({where: {name: autor}})
+                if (findAutor) {
+                    findAutor.pocetHlasek += 1
+                    findAutor.save()
+                } else {
+                    User.create({name: autor, pocetHlasek: 1, pocetZapisu: 0, pocetZprav: 0})
+                }
+            }
+            const findZapisovatel = await User.findOne({where: {discordId: zapisovatel}})
+            if (findZapisovatel) {
+                findZapisovatel.pocetZapisu += 1
+                findZapisovatel.save()
+            } else {
+                User.create({discordId: zapisovatel, pocetHlasek: 0, pocetZapisu: 1, pocetZprav: 0})
+            }
+            Hlaska.create({messageId: message.id})
+            message.react("👍")
         }
     }
 });
