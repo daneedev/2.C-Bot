@@ -2,6 +2,8 @@ const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { EmbedBuilder } = require('discord.js');
 const fs = require("fs")
 const Test = require("../models/Test")
+const dayjs = require('dayjs')
+
 new Command({
 	name: 'testy',
 	description: 'Napíše ti, jaké se budou zítra psát testy',
@@ -23,9 +25,10 @@ new Command({
 	run: async (ctx) => {
         const den = ctx.arguments.getInteger("den")
         const mesic = ctx.arguments.getInteger("mesic")
-        const zitraDate = new Date()
-        const zitraDen = zitraDate.getDate() + 1
-        const zitraMesic = zitraDate.getMonth() + 1
+        const zitraDate = dayjs().add(1, 'day')
+        const zitraDen = zitraDate.date()
+        const zitraMesic = zitraDate.month() + 1
+        console.log(zitraDen, zitraMesic)
         if (!den && !mesic) {
             const zitraTesty = await Test.findAll({where: {den: zitraDen, mesic: zitraMesic}})
             if (!zitraTesty.length >= 1) {
