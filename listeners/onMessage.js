@@ -72,7 +72,7 @@ new Listener({
         }
 
         // HLASKA LEADERBOARD
-        if (message.channel.id === "1174347873001943050") {
+        if (message.channel.id === process.env.HLASKY_CHANNEL_ID) {
             const zapisovatel = message.author.id
             if (message.author.bot) return
             let autor = message.content.split(" - ")[1]
