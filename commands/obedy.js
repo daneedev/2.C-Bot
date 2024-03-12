@@ -18,12 +18,15 @@ new Command({
 		} else {
 			fetch("https://app.strava.cz/api/jidelnicky", {
 				"body": `{\"cislo\":\"${config.jidelnaID}\",\"s5url\":\"https://wss5.strava.cz/WSStravne5_5/WSStravne5.svc\",\"lang\":\"CZ\",\"ignoreCert\":false}`,
-				"method": "POST"
+				"method": "POST",
+				headers: {
+					"Content-Type": "text/plain;charset=UTF-8"
+				}
 				}).then(response => response.json()).then(data => {
-				const datum = data[`table0`].find(meal => meal.druh_popis == "Polévka ").datum
-				const polevka = data[`table0`].find(meal => meal.druh_popis == "Polévka ").nazev
-				const obed1 = data[`table0`].find(meal => meal.druh_popis == "Oběd 1 ").nazev
-				const obed2 = data[`table0`].find(meal => meal.druh_popis == "Oběd 2 ").nazev
+				const datum = data[0][`table0`].find(meal => meal.druh_popis == "Polévka ").datum
+				const polevka = data[0][`table0`].find(meal => meal.druh_popis == "Polévka ").nazev
+				const obed1 = data[0][`table0`].find(meal => meal.druh_popis == "Oběd 1 ").nazev
+				const obed2 = data[0][`table0`].find(meal => meal.druh_popis == "Oběd 2 ").nazev
 				const embed = new EmbedBuilder()
 				embed.setTitle(`Obědy ${datum}`)
 				embed.setDescription(`**🍲 Polévka:** ${polevka}\n**🍕 Oběd 1:** ${obed1}\n**🍔 Oběd 2:** ${obed2}`)
