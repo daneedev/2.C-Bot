@@ -59,7 +59,6 @@ new Listener({
 				h.save()
 			} else {
 				const timeleft = h.time - dayjs().unix()
-				console.log(timeleft)
 				const collector = message.createMessageComponentCollector({componentType: Discord.ComponentType.Button, time: timeleft * 1000})
 
 				collector.on("collect", async i => {
