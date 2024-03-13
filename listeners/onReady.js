@@ -39,22 +39,26 @@ new Listener({
 		hlasovani.forEach(async (h) => {
 			const message = await client.channels.cache.get(h.channelId).messages.fetch(h.messageId)
 			if (h.time < dayjs().unix()) {
-				const actionrow = new Discord.ActionRowBuilder()
-				message.components[0].components.forEach(component => {
+				let endactionrows = []
+				message.components.forEach(row => {
+					const endactionrow = new Discord.ActionRowBuilder()
+					row.components.forEach(component => {
 					component.data.disabled = true
-					actionrow.addComponents(component)
+					endactionrow.addComponents(component)
+					})
+					endactionrows.push(endactionrow)
 				})
 				const options = h.options
 				let text = ""
 				options.forEach(option => {
 					text += `${option.name} - ${option.votes} hlasů\n`
 				})
-				text += `\n\nSkončilo před: <t:${h.time}:R>`
+				text += `\n\nHlasování skončilo: <t:${h.time}:R>`
 				const embed = new Discord.EmbedBuilder()
 				.setTitle(h.question)
 				.setDescription(text)
 				.setColor("Red")
-				message.edit({embeds: [embed], components: [actionrow]})
+				message.edit({embeds: [embed], components: endactionrows})
 				h.finished = true
 				h.save()
 			} else {
@@ -80,38 +84,45 @@ new Listener({
 						})
 						text += `\n\nKonec: <t:${h.time}:R>`
 						
+						let actionrows = []
+						message.components.forEach(row => {
 						const actionrow = new Discord.ActionRowBuilder()
-						i.message.components[0].components.forEach(component => {
-							actionrow.addComponents(component)
+							row.components.forEach(component => {
+								actionrow.addComponents(component)
+							})
+						actionrows.push(actionrow)
 						})
 						const update = new Discord.EmbedBuilder()
 						.setTitle(h.question)
 						.setDescription(text)
 						.setColor("Random")
-						i.message.edit({embeds: [update], components: [actionrow]})
+						i.message.edit({embeds: [update], components: actionrows})
 						h.options = options
 						h.save()
 					}
 				})
 
 				collector.on("end", async i => {
-					const actionrow = new Discord.ActionRowBuilder()
-					message.components[0].components.forEach(component => {
+					let endactionrows = []
+					message.components.forEach(row => {
+						const endactionrow = new Discord.ActionRowBuilder()
+						row.components.forEach(component => {
 						component.data.disabled = true
-						actionrow.addComponents(component)
+						endactionrow.addComponents(component)
+						})
+						endactionrows.push(endactionrow)
 					})
-
+					text = ""
 					const options = h.options
-					let text = ""
 					options.forEach(option => {
 						text += `${option.name} - ${option.votes} hlasů\n`
 					})
-					text += `\n\nSkončilo před: <t:${h.time}:R>`
-					const embed = new Discord.EmbedBuilder()
+					text += `\n\nHlasování skončilo: <t:${h.time}:R>`
+					const update = new Discord.EmbedBuilder()
 					.setTitle(h.question)
 					.setDescription(text)
 					.setColor("Red")
-					message.edit({embeds: [embed], components: [actionrow]})
+					message.edit({embeds: [update], components: endactionrows})
 					h.finished = true
 					h.save()
 				})

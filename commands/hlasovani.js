@@ -23,140 +23,162 @@ new Command({
             required: true
         }),
         new Argument({
-            name: 'number',
-            description: 'Počet odpovědí',
-            type: ArgumentType.INTEGER,
+            name: 'options',
+            description: 'Odpovědi (oddělujte čárkou)',
+            type: ArgumentType.STRING,
             required: true
         }),
     ],
 	run: async (ctx) => {
     const question = ctx.arguments.getString('question')
     const time = ctx.arguments.getString('time')
-    const number = ctx.arguments.getInteger('number')
+    let optionsraw = ctx.arguments.getString('options')
+    const errorembed = new Discord.EmbedBuilder()
+    .setColor("Red")
     if (time < 60000) {
-        return ctx.reply("Čas musí být alespoň 1 minuta")
+        errorembed.setTitle("Čas musí být alespoň 1 minuta")
+        return ctx.reply({embeds: [errorembed], ephemeral: true})
     }
-    const filter = m => m.author.id === ctx.user.id
-        if (number <=0) {
-            m.reply({content: "Tohle není číslo", ephemeral: true})
-            return
-        } else {
-            let options = []
+    if (!optionsraw.includes(",")) {
+        errorembed.setTitle("Musíš zadat alespoň 2 možnosti")
+        return ctx.reply({embeds: [errorembed], ephemeral: true})
+    }
+    optionsraw = optionsraw.split(",")
+    if (optionsraw.length > 25) {
+        errorembed.setTitle("Nemůžeš mít víc než 25 možností")
+        return ctx.reply({embeds: [errorembed], ephemeral: true})
+    }
+    let options = []
+    let date;
+    const usersReacted = []
+    let actionrows = []
+    if (optionsraw.length > 5) {
+        const actionrownumber = Math.ceil(optionsraw.length / 5) 
+        for (let i = 0; i < actionrownumber; i++) {   
             const actionrow = new Discord.ActionRowBuilder()
-            const usersReacted = []
-            let i = 1;
-            let date;
-            const option = new Discord.EmbedBuilder()
-            .setTitle(`Napiš odpověď číslo ${i}`)
-            .setFooter({text: "Na zodpovězení otázky máš 1 minutu"})
-            .setColor("Random")
-            await ctx.channel.send({embeds: [option]})
-            
-            const optionCollector = ctx.channel.createMessageCollector({ filter, time: 60000 });
-
-            optionCollector.on("collect", async (msg) => {
+            let length = 5
+            if (optionsraw.length < 5) {
+                length = optionsraw.length
+            }
+        for (let j = 0; j < length; j++) {
                 options.push({
-                    name: msg.content,
+                    name: optionsraw[j],
                     votes: 0
                 })
                 const button = new Discord.ButtonBuilder()
-                .setCustomId(msg.content)
-                .setLabel(msg.content)
+                .setCustomId(optionsraw[j])
+                .setLabel(optionsraw[j])
                 .setStyle(Discord.ButtonStyle.Primary)
-                optionCollector.resetTimer()
-                i++
                 actionrow.addComponents(button)
-                if (i > number) { return optionCollector.stop("next") }
-                option.setTitle(`Napiš odpověď číslo ${i}`)
-                await ctx.channel.send({embeds: [option]})
+        }
+        optionsraw = optionsraw.slice(5)
+        actionrows.push(actionrow)
+    }
+    } else {
+        const actionrow = new Discord.ActionRowBuilder()
+        optionsraw.forEach(option => {
+            options.push({
+                name: option,
+                votes: 0
             })
+            const button = new Discord.ButtonBuilder()
+            .setCustomId(option)
+            .setLabel(option)
+            .setStyle(Discord.ButtonStyle.Primary)
+            actionrow.addComponents(button)
+        })
+        actionrows.push(actionrow)
+    }
 
-            optionCollector.on("end", async (collected, reason) => {
-                if (reason !== "next") {
-                    const timeexpired = new Discord.EmbedBuilder()
-                    .setTitle("Čas vypršel")
-                    .setColor("Red")
-                    await ctx.channel.send({embeds: [timeexpired]})
-                } else {
-                    let text = ""
-                    options.forEach(option => {
-                        text += `${option.name} - ${option.votes} hlasů\n`
-                    })
-                    date = dayjs().add(ms(time), 'ms').unix()
-                    text += `\n\nKonec: <t:${date}:R>`
-                    const embed = new Discord.EmbedBuilder()
-                    .setTitle(question)
-                    .setDescription(text)
-                    .setColor("Random")
-                    let mainmsg;
-                    ctx.channel.send({embeds: [embed], components: [actionrow]}).then((msg) => {
-                        Hlasovani.create({
-                            messageId: msg.id,
-                            channelId: ctx.channel.id,
-                            options: options,
-                            finished: false,
-                            time: date,
-                            question: question,
-                            usersReacted: usersReacted
-                        })
-                        mainmsg = msg
-                    })
+    let text = ""
+    options.forEach(option => {
+        text += `${option.name} - ${option.votes} hlasů\n`
+    })
+    date = dayjs().add(ms(time), 'ms').unix()
+    text += `\n\nKonec: <t:${date}:R>`
+    const embed = new Discord.EmbedBuilder()
+    .setTitle(question)
+    .setDescription(text)
+    .setColor("Random")
+    let mainmsg;
+    ctx.channel.send({embeds: [embed], components: actionrows}).then((msg) => {
+        Hlasovani.create({
+            messageId: msg.id,
+            channelId: ctx.channel.id,
+            options: options,
+            finished: false,
+            time: date,
+            question: question,
+            usersReacted: usersReacted
+        })
+        mainmsg = msg
+        const reply = new Discord.EmbedBuilder()
+        .setTitle("Hlasování bylo vytvořeno")
+        .setColor("Green")
+        ctx.reply({embeds: [reply], ephemeral: true})
+    }).catch((err) => {
+        const reply = new Discord.EmbedBuilder()
+        .setTitle("Nelze vytvořit hlasování")
+        .setColor("Red")
+        ctx.reply({embeds: [reply], ephemeral: true})
+    })
 
-                    // BUTTON COLLECTOR
-                    const buttonCollector = ctx.channel.createMessageComponentCollector({componentType: Discord.ComponentType.Button, time: ms(time)})
-                     date = dayjs().add(ms(time), 'ms').unix()
+    // BUTTON COLLECTOR
+    const buttonCollector = ctx.channel.createMessageComponentCollector({componentType: Discord.ComponentType.Button, time: ms(time)})
+        date = dayjs().add(ms(time), 'ms').unix()
 
-                    buttonCollector.on("collect", async i => {
-                        if (usersReacted.includes(i.user.id)) {
-                            return i.reply({content: "Už jsi hlasoval", ephemeral: true})
-                        } else {
-                            const option = options.find(option => option.name === i.customId)
-                            option.votes++
-                            options = options.filter(option => option.name !== i.customId)
-                            options.push(option)
-                            options.sort((a, b) => b.votes - a.votes)
-                            usersReacted.push(i.user.id)
-                            i.reply({content: "Hlasováno", ephemeral: true})
-                            text = ""
-                            options.forEach(option => {
-                                text += `${option.name} - ${option.votes} hlasů\n`
-                            })
-                            text += `\n\nKonec: <t:${date}:R>`
-                            const update = new Discord.EmbedBuilder()
-                            .setTitle(question)
-                            .setDescription(text)
-                            .setColor("Random")
-                            i.message.edit({embeds: [update], components: [actionrow]})
-                            const hlasovani = await Hlasovani.findOne({where: {messageId: i.message.id}})
-                            hlasovani.options = options
-                            hlasovani.usersReacted = usersReacted
-                            hlasovani.save()
-                        }
-                    })
-                    
-                    buttonCollector.on("end", async i => {
-                        const endactionrow = new Discord.ActionRowBuilder()
-                        actionrow.components.forEach(component => {
-                            component.setDisabled(true)
-                            endactionrow.addComponents(component)
-                        })
-                        text = ""
-                        options.forEach(option => {
-                            text += `${option.name} - ${option.votes} hlasů\n`
-                        })
-                        text += `\n\nHlasování skončilo: <t:${date}:R>`
-                        const update = new Discord.EmbedBuilder()
-                        .setTitle(question)
-                        .setDescription(text)
-                        .setColor("Red")
-                        mainmsg.edit({embeds: [update], components: [endactionrow]})
-                        const hlasovani = await Hlasovani.findOne({where:{messageId: mainmsg.id}})
-                        hlasovani.finished = true
-                        hlasovani.save()
-                    })
-                }
+    buttonCollector.on("collect", async i => {
+        if (usersReacted.includes(i.user.id)) {
+            return i.reply({content: "Už jsi hlasoval", ephemeral: true})
+        } else {
+            const option = options.find(option => option.name === i.customId)
+            option.votes++
+            options = options.filter(option => option.name !== i.customId)
+            options.push(option)
+            options.sort((a, b) => b.votes - a.votes)
+            usersReacted.push(i.user.id)
+            i.reply({content: "Hlasováno", ephemeral: true})
+            text = ""
+            options.forEach(option => {
+                text += `${option.name} - ${option.votes} hlasů\n`
             })
-}
+            text += `\n\nKonec: <t:${date}:R>`
+            const update = new Discord.EmbedBuilder()
+            .setTitle(question)
+            .setDescription(text)
+            .setColor("Random")
+            i.message.edit({embeds: [update], components: i.message.components})
+            const hlasovani = await Hlasovani.findOne({where: {messageId: i.message.id}})
+            hlasovani.options = options
+            hlasovani.usersReacted = usersReacted
+            hlasovani.save()
+        }
+    })
+    
+    buttonCollector.on("end", async i => {
+        let endactionrows = []
+        mainmsg.components.forEach(row => {
+            const endactionrow = new Discord.ActionRowBuilder()
+            row.components.forEach(component => {
+            component.data.disabled = true
+            endactionrow.addComponents(component)
+            })
+            endactionrows.push(endactionrow)
+        })
+        text = ""
+        options.forEach(option => {
+            text += `${option.name} - ${option.votes} hlasů\n`
+        })
+        text += `\n\nHlasování skončilo: <t:${date}:R>`
+        const update = new Discord.EmbedBuilder()
+        .setTitle(question)
+        .setDescription(text)
+        .setColor("Red")
+        mainmsg.edit({embeds: [update], components: endactionrows})
+        const hlasovani = await Hlasovani.findOne({where:{messageId: mainmsg.id}})
+        hlasovani.finished = true
+        hlasovani.save()
+    })
 
 }
 });
