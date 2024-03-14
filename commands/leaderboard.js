@@ -32,6 +32,9 @@ new Command({
 	run: async (ctx) => {
             const type = ctx.arguments.getString("type")
             if (type === "msg") {
+                if (ctx.userId === "927459078479953950") {
+                    return;
+                }
                 const users = await User.findAll()
                 const sortedUsers = users.sort((a, b) => b.dataValues.pocetZprav - a.dataValues.pocetZprav)
                 const embed = new EmbedBuilder()
