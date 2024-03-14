@@ -4,6 +4,7 @@ let channels = require("../data/channels.json")
 const fs = require("fs");
 const dayjs = require('dayjs');
 const Discord = require('discord.js')
+const getProgressbar = require("../handlers/progress")
 // Create a new listener listening to the "ready" event
 new Listener({
 	// Set the name for the listener
@@ -50,8 +51,10 @@ new Listener({
 				})
 				const options = h.options
 				let text = ""
+				let max = 0
+				options.forEach(option => max += option.votes)
 				options.forEach(option => {
-					text += `${option.name} - ${option.votes} hlasů\n`
+					text += `__**${option.name} - ${option.votes} hlasů**__\n **${getProgressbar(option.votes, max)}**\n`
 				})
 				text += `\n\nHlasování skončilo: <t:${h.time}:R>`
 				const embed = new Discord.EmbedBuilder()
@@ -79,8 +82,10 @@ new Listener({
 						h.usersReacted.push(i.user.id)
 						i.reply({content: "Hlasováno", ephemeral: true})
 						text = ""
+						let max = 0
+						options.forEach(option => max += option.votes)
 						options.forEach(option => {
-							text += `${option.name} - ${option.votes} hlasů\n`
+							text += `__**${option.name} - ${option.votes} hlasů**__\n **${getProgressbar(option.votes, max)}**\n`
 						})
 						text += `\n\nKonec: <t:${h.time}:R>`
 						
@@ -114,8 +119,10 @@ new Listener({
 					})
 					text = ""
 					const options = h.options
+					let max = 0
+					options.forEach(option => max += option.votes)
 					options.forEach(option => {
-						text += `${option.name} - ${option.votes} hlasů\n`
+						text += `__**${option.name} - ${option.votes} hlasů**__\n **${getProgressbar(option.votes, max)}**\n`
 					})
 					text += `\n\nHlasování skončilo: <t:${h.time}:R>`
 					const update = new Discord.EmbedBuilder()

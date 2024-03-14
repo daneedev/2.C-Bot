@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 const ms = require('ms')
 const dayjs = require('dayjs');
 const Hlasovani = require('../models/Hlasovani');
+const getProgressbar = require("../handlers/progress")
 
 new Command({
 	name: 'hlasovani',
@@ -91,8 +92,10 @@ new Command({
     }
 
     let text = ""
+    let max = 0
+    options.forEach(option => max += option.votes)
     options.forEach(option => {
-        text += `${option.name} - ${option.votes} hlasů\n`
+        text += `__**${option.name} - ${option.votes} hlasů**__\n **${getProgressbar(option.votes, max)}**\n`
     })
     date = dayjs().add(ms(time), 'ms').unix()
     text += `\n\nKonec: <t:${date}:R>`
@@ -139,8 +142,10 @@ new Command({
             usersReacted.push(i.user.id)
             i.reply({content: "Hlasováno", ephemeral: true})
             text = ""
+            let max = 0
+            options.forEach(option => max += option.votes)
             options.forEach(option => {
-                text += `${option.name} - ${option.votes} hlasů\n`
+                text += `__**${option.name} - ${option.votes} hlasů**__\n **${getProgressbar(option.votes, max)}**\n`
             })
             text += `\n\nKonec: <t:${date}:R>`
             const update = new Discord.EmbedBuilder()
@@ -166,8 +171,10 @@ new Command({
             endactionrows.push(endactionrow)
         })
         text = ""
+        let max = 0
+        options.forEach(option => max += option.votes)
         options.forEach(option => {
-            text += `${option.name} - ${option.votes} hlasů\n`
+            text += `__**${option.name} - ${option.votes} hlasů**__\n **${getProgressbar(option.votes, max)}**\n`
         })
         text += `\n\nHlasování skončilo: <t:${date}:R>`
         const update = new Discord.EmbedBuilder()
