@@ -15,7 +15,7 @@ new Command({
             required: true,
             choices: [
                 {
-                    name: "Messages leaderboard",
+                    name: "Zprávy",
                     value: "msg"
                 },
                 {
@@ -25,6 +25,10 @@ new Command({
                 {
                     name: "Zapisovatelé hlášek",
                     value: "zapisovatele"
+                },
+                {
+                    name: "Znaky",
+                    value: "znaky"
                 },
             ]
         })
@@ -55,7 +59,14 @@ new Command({
                 .setColor("Random")
                 .setDescription(rankUsers(sortedUsers, "zapisovatele"))
                 ctx.reply({embeds: [embed]})
-            
+            } else if (type === "znaky") {
+                const users = await User.findAll()
+                const sortedUsers = users.sort((a, b) => b.dataValues.pocetZnaku - a.dataValues.pocetZnaku)
+                const embed = new EmbedBuilder()
+                .setTitle("Počet znaků ve zprávách")
+                .setColor("Random")
+                .setDescription(rankUsers(sortedUsers, "znaky"))
+                ctx.reply({embeds: [embed]})
             }
     }
 });
@@ -75,16 +86,20 @@ function rankUsers(users, type) {
             data = user.dataValues.pocetHlasek
         } else if (type === "zapisovatele") {
             data = user.dataValues.pocetZapisu
+        } else if (type === "znaky") {
+            data = user.dataValues.pocetZnaku
         }
 
-        if (data != previousScore) {
+        if (data === 0) {
+            return;
+        } else if (data != previousScore) {
             if (winners < 5) {
                 rank += 1
                 previousScore = data
             } else {
                 return;
             }
-        }
+        } 
         if (user.dataValues.discordId) {
             ranktext += `**${rank}. místo** <@${user.dataValues.discordId}> - ${data}\n`
         } else {

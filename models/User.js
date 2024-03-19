@@ -13,22 +13,30 @@ const User = database.define("user", {
     },
     pocetHlasek: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
     },
     pocetZapisu: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
     },
     pocetZprav: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
     },
+    pocetZnaku: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    }
 }, {
     modelName: "user",
     tableName: "users",
     timestamps: false
 })
 
-User.sync()
+User.sync({alter: true})
 
 module.exports = User;

@@ -65,9 +65,10 @@ new Listener({
             const findUser = await User.findOne({where: {discordId: message.author.id}})
             if (findUser) {
                 findUser.pocetZprav += 1
+                findUser.pocetZnaku += message.content.length
                 findUser.save()
             } else {
-                User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1})
+                User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1, pocetZnaku: message.content.length})
             }
         }
 
