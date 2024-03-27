@@ -66,9 +66,11 @@ new Listener({
             if (findUser) {
                 findUser.pocetZprav += 1
                 findUser.pocetZnaku += message.content.length
+                const matches = message.content.match(/💀/g) 
+                matches ? findUser.pocetSkull += matches.length : 0
                 findUser.save()
             } else {
-                User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1, pocetZnaku: message.content.length})
+                User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1, pocetZnaku: message.content.length, pocetSkull: 0})
             }
         }
 

@@ -30,6 +30,10 @@ new Command({
                     name: "Znaky",
                     value: "znaky"
                 },
+                {
+                    name: "Počet 💀",
+                    value: "skull"
+                }
             ]
         })
     ],
@@ -67,6 +71,14 @@ new Command({
                 .setColor("Random")
                 .setDescription(rankUsers(sortedUsers, "znaky"))
                 ctx.reply({embeds: [embed]})
+            } else if (type === "skull") {
+                const users = await User.findAll()
+                const sortedUsers = users.sort((a, b) => b.dataValues.pocetSkull - a.dataValues.pocetSkull)
+                const embed = new EmbedBuilder()
+                .setTitle("Počet 💀")
+                .setColor("Random")
+                .setDescription(rankUsers(sortedUsers, "skull"))
+                ctx.reply({embeds: [embed]})
             }
     }
 });
@@ -88,6 +100,8 @@ function rankUsers(users, type) {
             data = user.dataValues.pocetZapisu
         } else if (type === "znaky") {
             data = user.dataValues.pocetZnaku
+        } else if (type === "skull") {
+            data = user.dataValues.pocetSkull
         }
 
         if (data === 0) {
