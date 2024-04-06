@@ -27,10 +27,6 @@ new Command({
                     value: "zapisovatele"
                 },
                 {
-                    name: "Znaky",
-                    value: "znaky"
-                },
-                {
                     name: "Počet 💀",
                     value: "skull"
                 }
@@ -63,14 +59,6 @@ new Command({
                 .setColor("Random")
                 .setDescription(rankUsers(sortedUsers, "zapisovatele"))
                 ctx.reply({embeds: [embed]})
-            } else if (type === "znaky") {
-                const users = await User.findAll()
-                const sortedUsers = users.sort((a, b) => b.dataValues.pocetZnaku - a.dataValues.pocetZnaku)
-                const embed = new EmbedBuilder()
-                .setTitle("Počet znaků ve zprávách")
-                .setColor("Random")
-                .setDescription(rankUsers(sortedUsers, "znaky"))
-                ctx.reply({embeds: [embed]})
             } else if (type === "skull") {
                 const users = await User.findAll()
                 const sortedUsers = users.sort((a, b) => b.dataValues.pocetSkull - a.dataValues.pocetSkull)
@@ -98,8 +86,6 @@ function rankUsers(users, type) {
             data = user.dataValues.pocetHlasek
         } else if (type === "zapisovatele") {
             data = user.dataValues.pocetZapisu
-        } else if (type === "znaky") {
-            data = user.dataValues.pocetZnaku
         } else if (type === "skull") {
             data = user.dataValues.pocetSkull
         }

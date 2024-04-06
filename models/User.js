@@ -26,11 +26,6 @@ const User = database.define("user", {
         allowNull: false,
         defaultValue: 0
     },
-    pocetZnaku: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-    },
     pocetSkull: {
         type: DataTypes.INTEGER,
         allowNull: false,
