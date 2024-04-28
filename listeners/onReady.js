@@ -155,7 +155,7 @@ new Listener({
 					if (user.birthdayShowAge) {
 						description = `Dnes má <@${user.discordId}> své ${dayjs().year() - year}. narozeniny!`
 					}
-					const channel = client.channels.cache.get("1174347873001943050")
+					const channel = client.channels.cache.get("1148526800138416230")
 					const embed = new Discord.EmbedBuilder()
 					.setTitle("🎉 Vše nejlepší 🎉")
 					.setDescription(description)
