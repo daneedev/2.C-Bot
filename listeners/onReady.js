@@ -5,6 +5,7 @@ const fs = require("fs");
 const dayjs = require('dayjs');
 const Discord = require('discord.js')
 const getProgressbar = require("../handlers/progress")
+const User = require('../models/User')
 // Create a new listener listening to the "ready" event
 new Listener({
 	// Set the name for the listener
@@ -135,5 +136,36 @@ new Listener({
 				})
 			}
 		})
+
+		// NAROZENINY
+		const sent = []
+		console.log(dayjs().hour())
+		setInterval(async () => {
+			const users = await User.findAll()
+			users.forEach(user => {
+				const birthday = user.birthday
+				if (birthday === null) return
+				if (sent.includes(user.discordId)) return
+				const date = birthday.split(".")
+				const day = date[0]
+				const month = date[1]
+				const year = date[2]
+				if (dayjs().format("DD") === day && dayjs().format("MM") === month && dayjs().hour() === 12) {
+					let description = `Dnes má narozeniny <@${user.discordId}>!`
+					if (user.birthdayShowAge) {
+						description = `Dnes má <@${user.discordId}> své ${dayjs().year() - year}. narozeniny!`
+					}
+					const channel = client.channels.cache.get("1174347873001943050")
+					const embed = new Discord.EmbedBuilder()
+					.setTitle("🎉 Vše nejlepší 🎉")
+					.setDescription(description)
+					.setColor("Random")
+					channel.send({embeds: [embed]}).then((m) => {
+						m.react("🎉")
+					})
+					sent.push(user.discordId)
+				}
+			})
+		}, 60000)
     }
 });

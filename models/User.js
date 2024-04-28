@@ -1,4 +1,4 @@
-const {Model, DataTypes} = require("sequelize")
+const {DataTypes} = require("sequelize")
 const database = require("../database")
 
 
@@ -30,6 +30,14 @@ const User = database.define("user", {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0
+    },
+    birthday: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    birthdayShowAge: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true    
     }
 }, {
     modelName: "user",
