@@ -18,7 +18,7 @@
   "homepage": "https://github.com/DaneeSkripter/StravaAPI#readme",
   "dependencies": {
     "@discordjs/rest": "^2.2.0",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "discord-api-types": "^0.37.82",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
