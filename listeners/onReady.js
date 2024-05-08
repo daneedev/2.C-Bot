@@ -139,7 +139,6 @@ new Listener({
 
 		// NAROZENINY
 		const sent = []
-		console.log(dayjs().hour())
 		setInterval(async () => {
 			const users = await User.findAll()
 			users.forEach(user => {
@@ -150,7 +149,7 @@ new Listener({
 				const day = date[0]
 				const month = date[1]
 				const year = date[2]
-				if (dayjs().format("DD") === day && dayjs().format("MM") === month && dayjs().hour() === 12) {
+				if (dayjs().format("DD") === day && dayjs().format("MM") === month && dayjs().hour() > 8) {
 					let description = `Dnes má narozeniny <@${user.discordId}>!`
 					if (user.birthdayShowAge) {
 						description = `Dnes má <@${user.discordId}> své ${dayjs().year() - year}. narozeniny!`
