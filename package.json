@@ -19,7 +19,7 @@
   "dependencies": {
     "@discordjs/rest": "^2.3.0",
     "dayjs": "^1.11.11",
-    "discord-api-types": "^0.37.83",
+    "discord-api-types": "^0.37.84",
     "discord.js": "^14.15.2",
     "dotenv": "^16.4.5",
     "gcommands": "^10.0.0",
