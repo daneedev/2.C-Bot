@@ -40,7 +40,11 @@ new Command({
             } else {
                 let testyString = ""
                 zitraTesty.forEach((test) => {
-                    testyString = `${testyString}\n**${test.predmet}**: ${test.tema}`
+                    if (test.skupina === "") { 
+                        testyString = `${testyString}\n**${test.predmet}**: ${test.tema}`
+                    } else {
+                        testyString = `${testyString}\n**${test.predmet}** - *${test.skupina}*: ${test.tema}`
+                    }
                 })
                 const embed = new EmbedBuilder()
                 .setTitle(`Zítřejší testy`)
@@ -66,7 +70,11 @@ new Command({
             } else {
                 let testyString = ""
                 testyDatum.forEach((test) => {
-                    testyString = `${testyString}\n**${test.predmet}**: ${test.tema}`
+                    if (test.skupina === "") { 
+                        testyString = `${testyString}\n**${test.predmet}**: ${test.tema}`
+                    } else {
+                        testyString = `${testyString}\n**${test.predmet}** - *${test.skupina}*: ${test.tema}`
+                    }
                 })
                 const embed = new EmbedBuilder()
                 .setTitle(`Testy ${den}.${mesic}`)

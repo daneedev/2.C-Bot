@@ -2,6 +2,8 @@ const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { EmbedBuilder } = require('discord.js');
 const fs = require("fs")
 const Test = require("../models/Test")
+const subjects = require("../data/subjects.json")
+const groups = require("../data/groups.json")
 
 new Command({
 	name: 'pridattest',
@@ -31,64 +33,26 @@ new Command({
             description: "Předmět testu",
             type: ArgumentType.STRING,
             required: true,
-            choices: [
-                {
-                    name: "Český jazyk",
-                    value: "Český jazyk"
-                },
-                {
-                    name: "Anglický jazyk (SK Přech)",
-                    value: "Anglický jazyk (SK Přech)",
-                },
-                {
-                    name: "Anglický jazyk (SK Vlasová)",
-                    value: "Anglický jazyk (SK Vlasová)"
-                },
-                {
-                    name: "Matematika",
-                    value: "Matematika"
-                },
-                {
-                    name: "Fyzika",
-                    value: "Fyzika"
-                },
-                {
-                    name: "Dějepis",
-                    value: "Dějepis"
-                },
-                {
-                    name: "Chemie-ekologie",
-                    value: "Chemie-ekologie"
-                },
-                {
-                    name: "Elektrotechnika",
-                    value: "Elektrotechnika"
-                },
-                {
-                    name: "Počítačové sítě",
-                    value: "Počítačové sítě"
-                },
-                {
-                    name: "Hardware",
-                    value: "Hardware"
-                },
-                {
-                    name: "Technické kreslení",
-                    value: "Technické kreslení"
-                },
-                {
-                    name: "Programování a vývoj aplikací",
-                    value: "Programování a vývoj aplikací"
-                },
-                {
-                    name: "Praktické cvičení",
-                    value: "Praktické cvičení"
-                },
-                {
-                    name: "Prezentační dovednosti",
-                    value: "Prezentační dovednosti" 
+            choices: subjects
+        }),
+        new Argument({
+            name: "skupina",
+            description: "Skupina předmětu",
+            type: ArgumentType.STRING,
+            required: true,
+            run: (ctx) => {
+                const predmet = ctx.interaction.options.getString("predmet")
+                const skupiny = groups.find(group => group.subject === predmet)
+                if (!skupiny) {
+                    ctx.respond([
+                        {name: "SK1", value: "SK1"},
+                        {name: "SK2", value: "SK2"},
+                        {name: "Celá třída", value: ""},
+                    ])
+                } else {
+                    ctx.respond(skupiny.groups)
                 }
-            ]
+            }
         })
     ],
 	run: (ctx) => {
@@ -109,7 +73,7 @@ new Command({
             .setColor("Red")
             ctx.reply({embeds: [embed], ephemeral: true})
         } else {
-        Test.create({den: den, mesic: mesic, predmet: predmet, tema: tema})
+        Test.create({den: den, mesic: mesic, predmet: predmet, tema: tema, skupina: ctx.arguments.getString("skupina")})
         const embed = new EmbedBuilder()
         .setTitle("Test přidán!")
         .setColor("Green")
