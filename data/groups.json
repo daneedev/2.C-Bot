@@ -1,0 +1,118 @@
+[
+    {
+        "subject": "Matematika",
+        "groups": [
+            {
+                "name": "SK Frei",
+                "value": "SK Frei"
+            },
+            {
+                "name": "SK Agh",
+                "value": "SK Agh"
+            },
+            {
+                "name": "SK Souchová",
+                "value": "SK Souchová"
+            },
+            {
+                "name": "SK Zýková",
+                "value": "SK Zýková"
+            },
+            {
+                "name": "SK Mainzerová",
+                "value": "SK Mainzerová"
+            },
+            {
+                "name": "SK Miškovský",
+                "value": "SK Miškovský"
+            }
+        ]
+    },
+    {
+        "subject": "Anglický jazyk",
+        "groups": [
+            {
+                "name": "SK Přech",
+                "value": "SK Přech"
+            },
+            {
+                "name": "SK Glajchová",
+                "value": "SK Glajchová"
+            },
+            {
+                "name": "SK Novák",
+                "value": "SK Novák"
+            },
+            {
+                "name": "SK Benešová",
+                "value": "SK Benešová"
+            },
+            {
+                "name": "SK Hanuš",
+                "value": "SK Hanuš"
+            },
+            {
+                "name": "SK Černovická",
+                "value": "SK Černovická"
+            }
+        ]
+    },
+    {
+        "subject": "Programování a vývoj aplikací",
+        "groups": [
+            {
+                "name": "SK Šrámek",
+                "value": "SK Šrámek"
+            },
+            {
+                "name": "SK Cajthaml",
+                "value": "SK Cajthaml"
+            },
+            {
+                "name": "SK Pravda",
+                "value": "SK Pravda"
+            },
+            {
+                "name": "SK Všetečka",
+                "value": "SK Všetečka"
+            },
+            {
+                "name": "SK Himmer",
+                "value": "SK Himmer"   
+            },
+            {
+                "name": "SK Hejduk",
+                "value": "SK Hejduk"
+            }
+        ]
+    },
+    {
+        "subject": "Odborný seminář",
+        "groups": [
+            {
+                "name": "SOBECO",
+                "value": "SOBECO"
+            },
+            {
+                "name": "Robotika",
+                "value": "Robotika"  
+            },
+            {
+                "name": "Podnikání pod 18 let",
+                "value": "Podnikání pod 18 let"
+            },
+            {
+                "name": "Marketing",
+                "value": "Marketing"
+            },
+            {
+                "name": "Investivování jinak",
+                "value": "Investivování jinak"
+            },
+            {
+                "name": "Komunikační dovednosti",
+                "value": "Komunikační dovednosti"
+            }
+        ]
+    }
+]
