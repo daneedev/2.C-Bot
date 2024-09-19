@@ -1,0 +1,54 @@
+[
+    {
+        "name": "Český jazyk",
+        "value": "Český jazyk"
+    },
+    {
+        "name": "Anglický jazyk",
+        "value": "Anglický jazyk"
+    },
+    {
+        "name": "Matematika",
+        "value": "Matematika"
+    },
+    {
+        "name": "Fyzika",
+        "value": "Fyzika"
+    },
+    {
+        "name": "Dějepis",
+        "value": "Dějepis"
+    },
+    {
+        "name": "Počítačové sítě",
+        "value": "Počítačové sítě"
+    },
+    {
+        "name": "Hardware",
+        "value": "Hardware"
+    },
+    {
+        "name": "Programování a vývoj aplikací",
+        "value": "Programování a vývoj aplikací"
+    },
+    {
+        "name": "Praktické cvičení",
+        "value": "Praktické cvičení"
+    },
+    {
+        "name": "Prezentační dovednosti",
+        "value": "Prezentační dovednosti"
+    },
+    {
+        "name": "Webové aplikace",
+        "value": "Webové aplikace"
+    },
+    {
+        "name": "Grafické systémy",
+        "value": "Grafické systémy"
+    },
+    {
+        "name": "Odborný seminář",
+        "value": "Odborný seminář"
+    }
+]
