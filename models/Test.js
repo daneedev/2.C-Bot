@@ -11,6 +11,10 @@ const Test = database.define("test", {
         type: DataTypes.STRING,
         allowNull: false
     },
+    skupina: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     den: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -25,6 +29,6 @@ const Test = database.define("test", {
     timestamps: false
 })
 
-Test.sync()
+Test.sync({alter: true})
 
 module.exports = Test;
