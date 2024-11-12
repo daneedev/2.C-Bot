@@ -11,7 +11,13 @@ new Command({
         const hlaska = hlasky[Math.floor(Math.random() * hlasky.length)]
         const channel = await ctx.guild.channels.fetch("1151842838695387166")
         const message = await channel.messages.fetch(hlaska.messageId)
-        if (typeof(message.content) !== typeof("string")) {
+        if (!ctx.member.roles.cache.has("1138125910353125548")) {
+            const embed = new EmbedBuilder()
+            .setTitle("Chyba")
+            .setDescription("Na tuto funkci nemáš oprávnění")
+            .setColor("Red")
+            ctx.reply({embeds: [embed], ephemeral: true})
+        } else if (typeof(message.content) !== typeof("string")) {
             const embed = new EmbedBuilder()
             .setTitle("Chyba")
             .setDescription("Něco se pokazilo, zkuste to znovu")
