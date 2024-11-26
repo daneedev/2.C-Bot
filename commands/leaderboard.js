@@ -29,14 +29,18 @@ new Command({
                 {
                     name: "Počet 💀",
                     value: "skull"
+                },
+                {
+                    name: "Peníze",
+                    value: "money"
                 }
             ]
         })
     ],
 	run: async (ctx) => {
             const type = ctx.arguments.getString("type")
+            const users = await User.findAll()
             if (type === "msg") {
-                const users = await User.findAll()
                 const sortedUsers = users.sort((a, b) => b.dataValues.pocetZprav - a.dataValues.pocetZprav)
                 const embed = new EmbedBuilder()
                 .setTitle("Messages leaderboard")
@@ -44,7 +48,6 @@ new Command({
                 .setDescription(rankUsers(sortedUsers, "msg"))
                 ctx.reply({embeds: [embed]})
             } else if (type === "hlasky") {
-                const users = await User.findAll()
                 const sortedUsers = users.sort((a, b) => b.dataValues.pocetHlasek - a.dataValues.pocetHlasek)
                 const embed = new EmbedBuilder()
                 .setTitle("Hlášky leaderboard")
@@ -52,7 +55,6 @@ new Command({
                 .setDescription(rankUsers(sortedUsers, "hlasky"))
                 ctx.reply({embeds: [embed]})
             } else if (type === "zapisovatele") {
-                const users = await User.findAll()
                 const sortedUsers = users.sort((a, b) => b.dataValues.pocetZapisu - a.dataValues.pocetZapisu)
                 const embed = new EmbedBuilder()
                 .setTitle("Zapisovatelé hlášek leaderboard")
@@ -60,12 +62,18 @@ new Command({
                 .setDescription(rankUsers(sortedUsers, "zapisovatele"))
                 ctx.reply({embeds: [embed]})
             } else if (type === "skull") {
-                const users = await User.findAll()
                 const sortedUsers = users.sort((a, b) => b.dataValues.pocetSkull - a.dataValues.pocetSkull)
                 const embed = new EmbedBuilder()
                 .setTitle("Počet 💀")
                 .setColor("Random")
                 .setDescription(rankUsers(sortedUsers, "skull"))
+                ctx.reply({embeds: [embed]})
+            } else if (type === "money") {
+                const sortedUsers = users.sort((a, b) => (b.dataValues.cash + b.dataValues.bank) - (a.dataValues.cash + a.dataValues.bank))
+                const embed = new EmbedBuilder()
+                .setTitle("Peníze leaderboard")
+                .setColor("Random")
+                .setDescription(rankUsers(sortedUsers, "money"))
                 ctx.reply({embeds: [embed]})
             }
     }
@@ -88,6 +96,8 @@ function rankUsers(users, type) {
             data = user.dataValues.pocetZapisu
         } else if (type === "skull") {
             data = user.dataValues.pocetSkull
+        } else if (type === "money") {
+            data = user.dataValues.cash + user.dataValues.bank
         }
 
         if (data === 0) {
