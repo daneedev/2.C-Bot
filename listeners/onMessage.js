@@ -69,7 +69,7 @@ new Listener({
                 matches ? findUser.pocetSkull += matches.length : 0
                 findUser.save()
             } else {
-                User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1, pocetSkull: 0})
+                User.create({discordId: message.author.id, pocetHlasek: 0, pocetZapisu: 0, pocetZprav: 1, pocetSkull: 0, cash: 0, bank: 0})
             }
         }
 
@@ -87,7 +87,7 @@ new Listener({
                     findAutor.pocetHlasek += 1
                     findAutor.save()
                 } else {
-                    User.create({discordId: autor.replace("<@", "").replace(">", ""), pocetHlasek: 1, pocetZapisu: 0, pocetZprav: 0})
+                    User.create({discordId: autor.replace("<@", "").replace(">", ""), pocetHlasek: 1, pocetZapisu: 0, pocetZprav: 0, pocetSkull: 0, cash: 0, bank: 0})
                 }
             } else {
                 const findAutor = await User.findOne({where: {name: autor}})
@@ -95,7 +95,7 @@ new Listener({
                     findAutor.pocetHlasek += 1
                     findAutor.save()
                 } else {
-                    User.create({name: autor, pocetHlasek: 1, pocetZapisu: 0, pocetZprav: 0})
+                    User.create({name: autor, pocetHlasek: 1, pocetZapisu: 0, pocetZprav: 0, pocetSkull: 0, cash: 0, bank: 0})
                 }
             }
             const findZapisovatel = await User.findOne({where: {discordId: zapisovatel}})
@@ -103,7 +103,7 @@ new Listener({
                 findZapisovatel.pocetZapisu += 1
                 findZapisovatel.save()
             } else {
-                User.create({discordId: zapisovatel, pocetHlasek: 0, pocetZapisu: 1, pocetZprav: 0})
+                User.create({discordId: zapisovatel, pocetHlasek: 0, pocetZapisu: 1, pocetZprav: 0, pocetSkull: 0, cash: 0, bank: 0})
             }
             Hlaska.create({messageId: message.id})
             message.react("👍")

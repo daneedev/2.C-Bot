@@ -38,7 +38,17 @@ const User = database.define("user", {
     birthdayShowAge: {
         type: DataTypes.BOOLEAN,
         allowNull: true    
-    }
+    },
+    cash: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
+    bank: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    },
 }, {
     modelName: "user",
     tableName: "users",
