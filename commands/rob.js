@@ -6,7 +6,7 @@ new Command({
 	name: 'rob',
 	description: 'Okradni někoho',
 	type: [CommandType.SLASH, CommandType.MESSAGE],
-    cooldown: "6h",
+    cooldown: "2h",
     arguments: [
         new Argument({
             name: "user",
