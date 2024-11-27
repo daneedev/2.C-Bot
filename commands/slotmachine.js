@@ -67,7 +67,11 @@ new Command({
             default:
                 prize = -amount
                 break
-        }        
+        } 
+        
+        user.cash += prize
+        user.save()
+
         const embed = new EmbedBuilder()
         .setTitle("🎰 Automat")
         .setDescription(`+-------------+\n|--------------|\n${result}\n|--------------|\n+-------------+`)
