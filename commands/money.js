@@ -40,13 +40,39 @@ new Command({
             description: "Částka, kterou chceš upravit",
             type: ArgumentType.INTEGER,
             required: true
+        }),
+        new Argument({
+            name: "type",
+            description: "Banka/hotovost",
+            type: ArgumentType.STRING,
+            choices: [
+                {
+                    name: "Banka",
+                    value: "bank"
+                },
+                {
+                    name: "Hotovost",
+                    value: "cash"
+                }
+            ],
+            required: true
+        }),
+        new Argument({
+            name: "reason",
+            description: "Důvod",
+            type: ArgumentType.STRING,
+            required: false
         })
     ],
     run: async (ctx) => {
-        const type = ctx.arguments.getString("action");
+        const action = ctx.arguments.getString("action");
         const user = ctx.arguments.getUser("user");
         const amount = ctx.arguments.getInteger("amount");
         const userDB = await User.findOne({where: { discordId: user.id }});
+        const type = ctx.arguments.getString("type");
+        const reason = ctx.arguments.getString("reason");
+
+
         if (!ctx.member.roles.cache.has("1150872350091395233")) {
             const embed = new EmbedBuilder()
             .setTitle("Nemáš práva")
@@ -55,31 +81,34 @@ new Command({
             ctx.reply({embeds: [embed]})
             return;
         }
-        switch (type) {
+        switch (action) {
             case "add":
-                userDB.cash += amount;
+                if (type === "bank") userDB.bank += amount
+                else userDB.cash += amount;
                 userDB.save();
                 const embed = new EmbedBuilder()
                 .setTitle("Peníze přidány")
-                .setDescription(`Uživatel ${user} dostal ${commaNumber(amount)} Kč`)
+                .setDescription(`Uživatel ${user} dostal ${commaNumber(amount)} Kč\nDůvod: ${reason || "Není uveden"}`)
                 .setColor("Random")
                 ctx.reply({embeds: [embed]})
                 break;
             case "remove":
-                userDB.cash -= amount;
+                if (type === "bank") userDB.bank -= amount
+                else userDB.cash -= amount;
                 userDB.save();
                 const embed2 = new EmbedBuilder()
                 .setTitle("Peníze odebrány")
-                .setDescription(`Uživateli ${user} bylo odebráno ${commaNumber(amount)} Kč`)
+                .setDescription(`Uživateli ${user} bylo odebráno ${commaNumber(amount)} Kč\nDůvod: ${reason || "Není uveden"}`)
                 .setColor("Random")
                 ctx.reply({embeds: [embed2]})
                 break;
             case "set":
-                userDB.cash = amount;
+                if (type === "bank") userDB.bank = amount
+                else userDB.cash = amount;
                 userDB.save();
                 const embed3 = new EmbedBuilder()
                 .setTitle("Peníze nastaveny")
-                .setDescription(`Uživatel ${user} má nyní ${commaNumber(amount)} Kč`)
+                .setDescription(`Uživatel ${user} má nyní ${commaNumber(amount)} Kč\nDůvod: ${reason || "Není uveden"}`)
                 .setColor("Random")
                 ctx.reply({embeds: [embed3]})
                 break;
