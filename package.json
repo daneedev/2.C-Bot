@@ -21,7 +21,7 @@
     "canvas": "^2.11.2",
     "comma-number": "^2.1.0",
     "dayjs": "^1.11.13",
-    "discord-api-types": "^0.37.105",
+    "discord-api-types": "^0.37.109",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
     "gcommands": "^10.0.0",
