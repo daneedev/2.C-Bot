@@ -19,6 +19,7 @@
   "dependencies": {
     "@discordjs/rest": "^2.4.0",
     "canvas": "^2.11.2",
+    "comma-number": "^2.1.0",
     "dayjs": "^1.11.13",
     "discord-api-types": "^0.37.105",
     "discord.js": "^14.16.3",
