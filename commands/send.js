@@ -34,6 +34,13 @@ new Command({
             ctx.reply({embeds: [embed], ephemeral: true})
             return
         }
+        if (userDB.cash > amount) { 
+            const embed = new EmbedBuilder()
+            .setTitle("Nemáš dostatek peněz")
+            .setColor("Red")
+            ctx.reply({embeds: [embed], ephemeral: true})
+            return
+        }
         target.cash += amount
         target.save()
         userDB.cash -= amount
