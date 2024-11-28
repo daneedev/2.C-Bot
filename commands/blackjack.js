@@ -15,6 +15,7 @@ new Command({
         })
     ],
 	type: [CommandType.SLASH, CommandType.MESSAGE],
+    cooldown: "15s",
 	run: async (ctx) => {
         const cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
         let score = 0
@@ -92,7 +93,7 @@ new Command({
                         embed.setDescription("Překročil jsi 21")
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                        i.reply({content: "Překročil jsi 21", ephemeral: true})
+                        i.deferUpdate()
                         collector.stop()
                         user.cash -= amount
                         user.save()
@@ -109,7 +110,7 @@ new Command({
                         embed.setDescription("Máš 5 karet a nedosáhl jsi 21")
                         embed.setColor("Green")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                        i.reply({content: "Máš 5 karet a nedosáhl jsi 21", ephemeral: true})
+                        i.deferUpdate()
                         collector.stop()
                         user.cash += amount
                         user.save()
@@ -126,7 +127,7 @@ new Command({
                             {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
                         )
                         mainmsg.edit({embeds: [embed], components: [row]})
-                        i.reply({content: `Získal si kartu s hodnotou **${hit}**`, ephemeral: true})
+                        i.deferUpdate()
                     }
                     break;
                 case "stand":
@@ -141,7 +142,7 @@ new Command({
                     )
                     embed.setDescription(`Akce: Zůstal si stát. Čeká se na tahy dealera`)
                     mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                    i.reply({content: "Zůstal si stát. Čeká se na tahy dealera", ephemeral: true})
+                    i.deferUpdate()
                     
                     dealerplay()
                     break;
@@ -165,7 +166,7 @@ new Command({
                         embed.setDescription("Překročil jsi 21")
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                        i.reply({content: "Překročil jsi 21", ephemeral: true})
+                        i.deferUpdate()
                         collector.stop()
                         user.cash -= amount
                         user.save()
@@ -182,7 +183,7 @@ new Command({
                             {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
                         )
                         mainmsg.edit({embeds: [embed], components: [row]})
-                        i.reply({content: `Získal si kartu s hodnotou **${double}**`, ephemeral: true})
+                        i.deferUpdate()
                         dealerplay()
                     }
                     break;
