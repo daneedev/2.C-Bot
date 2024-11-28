@@ -1,6 +1,7 @@
 const { Command, CommandType } = require('gcommands');
 const { EmbedBuilder } = require('discord.js');
 const User = require("../models/User");
+const commaNumber = require('comma-number')
 
 new Command({
 	name: 'work',
@@ -31,7 +32,7 @@ new Command({
         user.save()
         const embed = new EmbedBuilder()
         .setTitle("Práce")
-        .setDescription(`Pracoval si hodinu jako ${jobs[Math.floor(Math.random() * jobs.length)]} a vydělal sis ${cash} Kč`)
+        .setDescription(`Pracoval si hodinu jako ${jobs[Math.floor(Math.random() * jobs.length)]} a vydělal sis ${commaNumber(cash)} Kč`)
         .setColor("Random")
         ctx.reply({embeds: [embed]})
     }

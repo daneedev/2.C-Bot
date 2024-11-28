@@ -1,6 +1,7 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { EmbedBuilder } = require('discord.js');
 const User = require("../models/User");
+const commaNumber = require('comma-number')
 
 new Command({
 	name: 'transfer',
@@ -42,7 +43,7 @@ new Command({
             user.save()
             const embed = new EmbedBuilder()
             .setTitle("Vklad")
-            .setDescription(`Vložil jsi ${amount} Kč do banky`)
+            .setDescription(`Vložil jsi ${commaNumber(amount)} Kč do banky`)
             .setColor("Random")
             ctx.reply({embeds: [embed]})
         } else {
@@ -59,7 +60,7 @@ new Command({
             user.save()
             const embed = new EmbedBuilder()
             .setTitle("Výběr")
-            .setDescription(`Vybral jsi ${amount} Kč z banky`)
+            .setDescription(`Vybral jsi ${commaNumber(amount)} Kč z banky`)
             .setColor("Random")
             ctx.reply({embeds: [embed]})
         }

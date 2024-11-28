@@ -2,6 +2,7 @@ const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { EmbedBuilder, ChannelType } = require('discord.js');
 const fs = require('fs');
 const User = require('../models/User');
+const commaNumber = require('comma-number');
 
 new Command({
 	name: 'leaderboard',
@@ -97,7 +98,7 @@ function rankUsers(users, type) {
         } else if (type === "skull") {
             data = user.dataValues.pocetSkull
         } else if (type === "money") {
-            data = user.dataValues.cash + user.dataValues.bank
+            data = commaNumber(user.dataValues.cash + user.dataValues.bank)
         }
 
         if (data === 0) {

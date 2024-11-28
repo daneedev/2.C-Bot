@@ -1,6 +1,7 @@
 const { Command, CommandType, Argument, ArgumentType } = require('gcommands');
 const { EmbedBuilder } = require('discord.js');
 const User = require("../models/User");
+const commaNumber = require('comma-number')
 
 new Command({
 	name: 'slotmachine',
@@ -75,7 +76,7 @@ new Command({
         const embed = new EmbedBuilder()
         .setTitle("🎰 Automat")
         .setDescription(`+-------------+\n|--------------|\n${result}\n|--------------|\n+-------------+`)
-        .addFields({name: "Výsledek", value: `${amount} Kč => **${prize} Kč**`, inline: true},
+        .addFields({name: "Výsledek", value: `${amount} Kč => **${commaNumber(prize)} Kč**`, inline: true},
             {name: "Šance", value: "🍒 5% - **3x**\n🍋 15% - **2.5x**\n🍇 30% - **2x**\n🍫 50% - **1.5x**", inline: true}
         )
         .setColor("Random")
