@@ -29,6 +29,14 @@ new Command({
         const user = await User.findOne({where: {discordId: ctx.user.id}})
         const type = ctx.arguments.getString("type")
         const amount = ctx.arguments.getInteger("amount")
+        if (amount >= 0) {
+            const embed = new EmbedBuilder()
+            .setTitle("Neplatná částka")
+            .setDescription("Částka musí být kladná")
+            .setColor("Red")
+            ctx.reply({embeds: [embed], ephemeral: true})
+            return
+        }
         if (type === "deposit") {
             if (user.cash < amount) {
                 const embed = new EmbedBuilder()
