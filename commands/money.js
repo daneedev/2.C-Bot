@@ -88,7 +88,7 @@ new Command({
                 userDB.save();
                 const embed = new EmbedBuilder()
                 .setTitle("Peníze přidány")
-                .setDescription(`Uživatel ${user} dostal ${commaNumber(amount)} Kč\nDůvod: ${reason || "Není uveden"}`)
+                .setDescription(`Uživatel ${user} dostal ${commaNumber(amount)} Kč\n**Typ**: ${type}\n**Důvod**: ${reason || "Není uveden"}`)
                 .setColor("Random")
                 ctx.reply({embeds: [embed]})
                 break;
@@ -98,7 +98,7 @@ new Command({
                 userDB.save();
                 const embed2 = new EmbedBuilder()
                 .setTitle("Peníze odebrány")
-                .setDescription(`Uživateli ${user} bylo odebráno ${commaNumber(amount)} Kč\nDůvod: ${reason || "Není uveden"}`)
+                .setDescription(`Uživateli ${user} bylo odebráno ${commaNumber(amount)} Kč\n**Typ**: ${type}\n**Důvod**: ${reason || "Není uveden"}`)
                 .setColor("Random")
                 ctx.reply({embeds: [embed2]})
                 break;
@@ -108,7 +108,7 @@ new Command({
                 userDB.save();
                 const embed3 = new EmbedBuilder()
                 .setTitle("Peníze nastaveny")
-                .setDescription(`Uživatel ${user} má nyní ${commaNumber(amount)} Kč\nDůvod: ${reason || "Není uveden"}`)
+                .setDescription(`Uživatel ${user} má nyní ${commaNumber(amount)} Kč\n**Typ**: ${type}\n**Důvod**: ${reason || "Není uveden"}`)
                 .setColor("Random")
                 ctx.reply({embeds: [embed3]})
                 break;
