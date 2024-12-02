@@ -131,6 +131,7 @@ new Command({
                     }
                     break;
                 case "stand":
+                    collector.stop()
                     const embed = new EmbedBuilder()
                     .setTitle("Blackjack")
                     embed.addFields(
@@ -151,6 +152,7 @@ new Command({
                         i.reply({content: "Nemáš dostatek peněz na zdvojnásobení sázky", ephemeral: true})
                         return
                     }
+                    collector.stop()
                     const double = Hit()
                     amount = amount * 2
                     if (double == -1) {
@@ -167,7 +169,6 @@ new Command({
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
                         i.deferUpdate()
-                        collector.stop()
                         user.cash -= amount
                         user.save()
                     } else {
