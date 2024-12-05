@@ -166,5 +166,13 @@ new Listener({
 				}
 			})
 		}, 60000)
+
+
+		// IN GAME RESET
+		const inGameUsers = await User.findAll({where: {inGame: true}})
+		inGameUsers.forEach(user => {
+			user.inGame = false
+			user.save()
+		})
     }
 });

@@ -49,6 +49,11 @@ const User = database.define("user", {
         allowNull: false,
         defaultValue: 0
     },
+    inGame: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    }
 }, {
     modelName: "user",
     tableName: "users",

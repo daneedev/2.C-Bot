@@ -25,6 +25,14 @@ new Command({
 
        let amount = ctx.arguments.getInteger("amount")
        const user = await User.findOne({where: {discordId: ctx.user.id}})
+       if (user.inGame === true) {
+              const embed = new EmbedBuilder()
+                .setTitle("Nemůžeš použít ekonomiku")
+                .setDescription("Nemůžeš použít ekonomiku, když jsi v hře")
+                .setColor("Red")
+                ctx.reply({embeds: [embed], ephemeral: true})
+                return
+       }
          if (amount < 1) {
               const embed = new EmbedBuilder()
               .setTitle("Nelze vsadit")
@@ -60,7 +68,8 @@ new Command({
         const firstHit = Hit()
         const embed = constructEmbed()
         ctx.reply({embeds: [embed], components: [row]}).then(msg =>  mainmsg = msg)
-
+        user.inGame = true
+        user.save()
         const filter = i => i.user.id === ctx.user.id
 
         const collector = ctx.channel.createMessageComponentCollector({filter: filter})
@@ -78,6 +87,7 @@ new Command({
                         i.reply({content: "Překročil jsi 21", ephemeral: true})
                         collector.stop()
                         user.cash -= amount
+                        user.inGame = false
                         user.save()
                     } else if (playerCards.length == 5) {
                         const embed = constructEmbed()
@@ -88,6 +98,7 @@ new Command({
                         i.reply({content: "Máš 5 karet a nedosáhl jsi 21", ephemeral: true})
                         collector.stop()
                         user.cash += amount
+                        user.inGame = false
                         user.save()
                     } else {
                         const embed = constructEmbed()
@@ -183,6 +194,7 @@ new Command({
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
                 user.cash += amount
+                user.inGame = false
                 user.save()
             } else if (dealerScore > score) {
                 const embed = constructEmbed()
@@ -192,6 +204,7 @@ new Command({
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
                 user.cash -= amount
+                user.inGame = false
                 user.save()
             } else if (dealerScore < score) {
                 const embed = constructEmbed()
@@ -201,6 +214,7 @@ new Command({
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
                 user.cash += amount
+                user.inGame = false
                 user.save()
             } else if (dealerScore == score) {
                 const embed = constructEmbed()
@@ -209,6 +223,8 @@ new Command({
                 embed.setColor("Yellow")
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
+                user.inGame = false
+                user.save()
             }
         }
     }
