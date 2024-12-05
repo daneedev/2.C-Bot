@@ -58,17 +58,7 @@ new Command({
 
         let mainmsg;
         const firstHit = Hit()
-        const embed = new EmbedBuilder()
-        .setTitle("Blackjack")
-        .addFields(
-            {name: "Sázka", value: `${amount} Kč`, inline: true},
-            {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-            {name: "Tvoje skóre", value: score.toString(), inline: true},
-            {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-            {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-        )
-        .setColor("Random")
-        .setDescription(`Akce: Získal si kartu s hodnotou **${firstHit}**`)
+        const embed = constructEmbed()
         ctx.reply({embeds: [embed], components: [row]}).then(msg =>  mainmsg = msg)
 
         const filter = i => i.user.id === ctx.user.id
@@ -80,15 +70,8 @@ new Command({
                 case "hit":
                     const hit = Hit()
                     if (hit == -1) {
-                        const embed = new EmbedBuilder()
+                        const embed = constructEmbed()
                         embed.setTitle("Blackjack: Prohrál jsi")
-                        embed.addFields(
-                            {name: "Sázka", value: `${amount} Kč`, inline: true},
-                            {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Tvoje skóre", value: score.toString(), inline: true},
-                            {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                        )
                         embed.setDescription("Překročil jsi 21")
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
@@ -97,15 +80,8 @@ new Command({
                         user.cash -= amount
                         user.save()
                     } else if (playerCards.length == 5) {
-                        const embed = new EmbedBuilder()
+                        const embed = constructEmbed()
                         embed.setTitle("Blackjack: Vyhrál jsi")
-                        embed.addFields(
-                            {name: "Sázka", value: `${amount} Kč`, inline: true},
-                            {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Tvoje skóre", value: score.toString(), inline: true},
-                            {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                        )
                         embed.setDescription("Máš 5 karet a nedosáhl jsi 21")
                         embed.setColor("Green")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
@@ -114,31 +90,14 @@ new Command({
                         user.cash += amount
                         user.save()
                     } else {
-                        const embed = new EmbedBuilder()
-                        embed.setTitle("Blackjack")
-                        embed.setColor("Random")
+                        const embed = constructEmbed()
                         embed.setDescription(`Akce: Získal si kartu s hodnotou **${hit}**`)
-                        embed.addFields(
-                            {name: "Sázka", value: `${amount} Kč`, inline: true},
-                            {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Tvoje skóre", value: score.toString(), inline: true},
-                            {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                        )
                         mainmsg.edit({embeds: [embed], components: [row]})
                         i.reply({content: `Získal si kartu s hodnotou **${hit}**`, ephemeral: true})
                     }
                     break;
                 case "stand":
-                    const embed = new EmbedBuilder()
-                    .setTitle("Blackjack")
-                    embed.addFields(
-                        {name: "Sázka", value: `${amount} Kč`, inline: true},
-                        {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                        {name: "Tvoje skóre", value: score.toString(), inline: true},
-                        {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                        {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                    )
+                    const embed = constructEmbed()
                     embed.setDescription(`Akce: Zůstal si stát. Čeká se na tahy dealera`)
                     mainmsg.edit({embeds: [embed], components: [disabledRow]})
                     i.reply({content: "Zůstal si stát. Čeká se na tahy dealera", ephemeral: true})
@@ -153,15 +112,8 @@ new Command({
                     const double = Hit()
                     amount = amount * 2
                     if (double == -1) {
-                        const embed = new EmbedBuilder()
+                        const embed = constructEmbed()
                         embed.setTitle("Blackjack: Prohrál jsi")
-                        embed.addFields(
-                            {name: "Sázka", value: `${amount} (**x2**) Kč`, inline: true},
-                            {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Tvoje skóre", value: score.toString(), inline: true},
-                            {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                        )
                         embed.setDescription("Překročil jsi 21")
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
@@ -170,17 +122,8 @@ new Command({
                         user.cash -= amount
                         user.save()
                     } else {
-                        const embed = new EmbedBuilder()
-                        embed.setTitle("Blackjack")
-                        embed.setColor("Random")
+                        const embed = constructEmbed()
                         embed.setDescription(`Akce: Získal si kartu s hodnotou **${double}**`)
-                        embed.addFields(
-                            {name: "Sázka", value: `${amount} (**x2**) Kč`, inline: true},
-                            {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Tvoje skóre", value: score.toString(), inline: true},
-                            {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                            {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                        )
                         mainmsg.edit({embeds: [embed], components: [row]})
                         i.reply({content: `Získal si kartu s hodnotou **${double}**`, ephemeral: true})
                         dealerplay()
@@ -189,6 +132,20 @@ new Command({
             }
         })
 
+        function constructEmbed() {
+            const embed = new EmbedBuilder()
+             .setTitle("Blackjack")
+            .addFields(
+            {name: "Sázka", value: `${amount} Kč`, inline: true},
+            {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
+            {name: "Tvoje skóre", value: score.toString(), inline: true},
+            {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
+            {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
+            )
+            .setColor("Random")
+            .setDescription(`Akce: Získal si kartu s hodnotou **${firstHit}**`)
+            return embed
+        }
 
         function Hit() {
             const card = cards[Math.floor(Math.random() * cards.length)]
@@ -213,78 +170,42 @@ new Command({
             while (dealerScore < 17) {
                 await new Promise(resolve => setTimeout(resolve, 2000))
                 const dealerHit = DealerPlay();
-                const embed = new EmbedBuilder()
-                embed.setTitle("Blackjack");
+                const embed = constructEmbed()
                 embed.setDescription(`Akce: Dealer získal kartu s hodnotou **${dealerHit}**`);
-                embed.addFields(
-                    {name: "Sázka", value: `${amount} Kč`, inline: true},
-                    {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Tvoje skóre", value: score.toString(), inline: true},
-                    {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                );
                 await mainmsg.edit({embeds: [embed], components: [disabledRow]});
             }
 
             if (dealerScore > 21) {
-                const embed = new EmbedBuilder()
+                const embed = constructEmbed()
                 embed.setTitle("Blackjack: Vyhrál jsi")
                 embed.setDescription("Dealer překročil 21")
-                embed.addFields(
-                    {name: "Sázka", value: `${amount} Kč`, inline: true},
-                    {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Tvoje skóre", value: score.toString(), inline: true},
-                    {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                )
                 embed.setColor("Green")
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
                 user.cash += amount
                 user.save()
             } else if (dealerScore > score) {
-                const embed = new EmbedBuilder()
+                const embed = constructEmbed()
                 embed.setTitle("Blackjack: Prohrál jsi")
                 embed.setDescription("Dealer má lepší skóre")
-                embed.addFields(
-                    {name: "Sázka", value: `${amount} Kč`, inline: true},
-                    {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Tvoje skóre", value: score.toString(), inline: true},
-                    {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                )
                 embed.setColor("Red")
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
                 user.cash -= amount
                 user.save()
             } else if (dealerScore < score) {
-                const embed = new EmbedBuilder()
+                const embed = constructEmbed()
                 embed.setTitle("Blackjack: Vyhrál jsi")
                 embed.setDescription("Máš lepší skóre než dealer")
-                embed.addFields(
-                    {name: "Sázka", value: `${amount} Kč`, inline: true},
-                    {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Tvoje skóre", value: score.toString(), inline: true},
-                    {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                )
                 embed.setColor("Green")
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
                 user.cash += amount
                 user.save()
             } else if (dealerScore == score) {
-                const embed = new EmbedBuilder()
+                const embed = constructEmbed()
                 embed.setTitle("Blackjack: Remíza")
                 embed.setDescription("Máte stejné skóre")
-                embed.addFields(
-                    {name: "Sázka", value: `${amount} Kč`, inline: true},
-                    {name: "Tvoje karty", value: (playerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Tvoje skóre", value: score.toString(), inline: true},
-                    {name: "Karty dealera", value: (dealerCards.join(", ") || "Žádné"), inline: true},
-                    {name: "Skóre dealera", value: dealerScore.toString(), inline: true}
-                )
                 embed.setColor("Yellow")
                 mainmsg.edit({embeds: [embed], components: [disabledRow]})
                 collector.stop()
@@ -292,4 +213,3 @@ new Command({
         }
     }
 });
-
