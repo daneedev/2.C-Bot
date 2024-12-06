@@ -35,7 +35,7 @@ new Command({
             return
         }
         const slots = ["🍒", "🍋", "🍇", "🍫"]
-        const weights = [5, 15, 30, 50]
+        const weights = [10, 20, 30, 40]
 
         function getRandomSymbol(symbols, weights) {
             const totalWeight = weights.reduce((acc, weight) => acc + weight, 0);
@@ -54,16 +54,16 @@ new Command({
         let prize = 0
         switch (result) {
             case "| 🍒 | 🍒 | 🍒 |":
-                prize = amount * 3
+                prize = amount * 5
                 break
             case "| 🍋 | 🍋 | 🍋 |":
-                prize = amount * 2.5
+                prize = amount * 4
                 break
             case "| 🍇 | 🍇 | 🍇 |":
-                prize = amount * 2
+                prize = amount * 3
                 break
             case "| 🍫 | 🍫 | 🍫 |":
-                prize = amount * 1.5
+                prize = amount * 2
                 break
             default:
                 prize = -amount
@@ -77,7 +77,7 @@ new Command({
         .setTitle("🎰 Automat")
         .setDescription(`+-------------+\n|--------------|\n${result}\n|--------------|\n+-------------+`)
         .addFields({name: "Výsledek", value: `${amount} Kč => **${commaNumber(prize)} Kč**`, inline: true},
-            {name: "Šance", value: "🍒 5% - **3x**\n🍋 15% - **2.5x**\n🍇 30% - **2x**\n🍫 50% - **1.5x**", inline: true}
+            {name: "Šance", value: "🍒 10% - **5x**\n🍋 20% - **4x**\n🍇 30% - **3x**\n🍫 40% - **2x**", inline: true}
         )
         .setColor("Random")
         ctx.reply({embeds: [embed]})
