@@ -84,7 +84,7 @@ new Command({
                         embed.setDescription("Překročil jsi 21")
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                        i.reply({content: "Překročil jsi 21", ephemeral: true})
+                        i.deferUpdate()
                         collector.stop()
                         user.cash -= amount
                         user.inGame = false
@@ -95,7 +95,7 @@ new Command({
                         embed.setDescription("Máš 5 karet a nedosáhl jsi 21")
                         embed.setColor("Green")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                        i.reply({content: "Máš 5 karet a nedosáhl jsi 21", ephemeral: true})
+                        i.deferUpdate()
                         collector.stop()
                         user.cash += amount
                         user.inGame = false
@@ -104,14 +104,14 @@ new Command({
                         const embed = constructEmbed()
                         embed.setDescription(`Akce: Získal si kartu s hodnotou **${hit}**`)
                         mainmsg.edit({embeds: [embed], components: [row]})
-                        i.reply({content: `Získal si kartu s hodnotou **${hit}**`, ephemeral: true})
+                        i.deferUpdate()
                     }
                     break;
                 case "stand":
                     const embed = constructEmbed()
                     embed.setDescription(`Akce: Zůstal si stát. Čeká se na tahy dealera`)
                     mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                    i.reply({content: "Zůstal si stát. Čeká se na tahy dealera", ephemeral: true})
+                    i.deferUpdate()
                     
                     dealerplay()
                     break;
@@ -128,7 +128,7 @@ new Command({
                         embed.setDescription("Překročil jsi 21")
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
-                        i.reply({content: "Překročil jsi 21", ephemeral: true})
+                        i.deferUpdate()
                         collector.stop()
                         user.cash -= amount
                         user.save()
@@ -136,7 +136,7 @@ new Command({
                         const embed = constructEmbed()
                         embed.setDescription(`Akce: Získal si kartu s hodnotou **${double}**`)
                         mainmsg.edit({embeds: [embed], components: [row]})
-                        i.reply({content: `Získal si kartu s hodnotou **${double}**`, ephemeral: true})
+                        i.deferUpdate()
                         dealerplay()
                     }
                     break;
