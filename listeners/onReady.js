@@ -174,5 +174,30 @@ new Listener({
 			user.inGame = false
 			user.save()
 		})
+
+
+		// CREATE USERS IN DB
+		const guild = client.guilds.cache.get("1138125239973314581")
+
+		await guild.members.fetch()
+		
+		guild.members.cache.forEach(async user => {
+			console.log(user)
+			if (!(await User.findOne({where: {discordId: user.id}}))) {
+				User.create({
+					discordId: user.id,
+					name: null,
+					pocetHlasek: 0,
+					pocetZapisu: 0,
+					pocetZprav: 0,
+					pocetSkull: 0,
+					cash: 0,
+					bank: 0,
+					inGame: false,
+					birthday: null,
+					birthdayShowAge: null
+				})
+			}
+		});
     }
 });
