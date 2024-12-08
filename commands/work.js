@@ -27,7 +27,7 @@ new Command({
             "Discord mod"
         ];
         const user = await User.findOne({where: {discordId: ctx.user.id}})
-        const cash = Math.floor(Math.random() * 300)
+        const cash = Math.floor(Math.random() * (400 - 100) + 100)
         user.cash += cash
         user.save()
         const embed = new EmbedBuilder()
