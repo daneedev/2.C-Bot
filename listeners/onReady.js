@@ -182,7 +182,6 @@ new Listener({
 		await guild.members.fetch()
 		
 		guild.members.cache.forEach(async user => {
-			console.log(user)
 			if (!(await User.findOne({where: {discordId: user.id}}))) {
 				User.create({
 					discordId: user.id,
