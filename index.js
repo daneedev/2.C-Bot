@@ -24,8 +24,22 @@ const client = new GClient({
 	],
 	messageSupport: false,
 	devGuildId: process.env.DEV_SERVER,
-	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers], // !! IMPORTANT !! Uncomment these original intents before running in production
+	intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions], // !! IMPORTANT !! Uncomment these original intents before running in production
 });
+
+// GIVEAWAYS
+const { GiveawaysManager } = require('discord-giveaways');
+const manager = new GiveawaysManager(client, {
+    storage: './data/giveaways.json',
+    default: {
+        botsCanWin: false,
+        embedColor: '#FF0000',
+        embedColorEnd: '#000000',
+        reaction: '🎉'
+    }
+});
+
+module.exports.giveaway = manager
 
 client.login(process.env.TOKEN);
 
