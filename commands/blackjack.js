@@ -108,6 +108,7 @@ new Command({
                     }
                     break;
                 case "stand":
+                    collector.stop()
                     const embed = constructEmbed()
                     embed.setDescription(`Akce: Zůstal si stát. Čeká se na tahy dealera`)
                     mainmsg.edit({embeds: [embed], components: [disabledRow]})
@@ -120,6 +121,7 @@ new Command({
                         i.reply({content: "Nemáš dostatek peněz na zdvojnásobení sázky", ephemeral: true})
                         return
                     }
+                    collector.stop()
                     const double = Hit()
                     amount = amount * 2
                     if (double == -1) {
@@ -129,7 +131,6 @@ new Command({
                         embed.setColor("Red")
                         mainmsg.edit({embeds: [embed], components: [disabledRow]})
                         i.deferUpdate()
-                        collector.stop()
                         user.cash -= amount
                         user.save()
                     } else {
