@@ -31,7 +31,7 @@ new Command({
         const reward = ctx.arguments.getString("reward")
         const maxUses = ctx.arguments.getInteger("maxuses")
         const embed = new EmbedBuilder()
-        if (!ctx.member.roles.has("1150872350091395233")) {
+        if (!ctx.member.roles.cache.has("1150872350091395233")) {
             embed.setTitle("Nemáš dostatečná oprávnění")
             embed.setColor("Red")
             ctx.reply({embeds: [embed], ephemeral: true})
