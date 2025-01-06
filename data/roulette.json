@@ -1,0 +1,41 @@
+[
+    {
+        "type": "color",
+        "bets": [
+            {
+                "name": "Červená",
+                "value": "Červená"
+            },
+            {
+                "name": "Černá",
+                "value": "Černá"
+            }
+        ]
+    },
+    {
+        "type": "evenodd",
+        "bets": [
+            {
+                "name": "Sudá",
+                "value": "even"
+            },
+            {
+                "name": "Lichá",
+                "value": "odd"
+            }
+        ]
+    },
+    {
+        "type": "half",
+        "bets": [
+            {
+                "name": "Low (1-18)",
+                "value": "low"
+            },
+            {
+                "name": "High (19-36)",
+                "value": "high"
+            }
+        ]
+    }
+]
