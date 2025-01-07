@@ -120,7 +120,7 @@ new Command({
                 ctx.reply({embeds: [embed], ephemeral: true})
                 return
             }
-            if (value === number) {
+            if (value == number) {
                 user.cash += amount * 36
                 user.save()
                 result = 1
