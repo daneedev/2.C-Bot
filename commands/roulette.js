@@ -134,7 +134,7 @@ new Command({
             break;
         case "color":
             if (value === colors[color]) {
-                user.cash += amount * 2
+                user.cash += amount 
                 user.save()
                 result = 1
                 win = amount * 2
@@ -147,12 +147,12 @@ new Command({
             break;
         case "evenodd":
             if (value === "even" && number % 2 === 0) {
-                user.cash += amount * 2
+                user.cash += amount
                 user.save()
                 result = 1
                 win = amount * 2
             } else if (value === "odd" && number % 2 !== 0) {
-                user.cash += amount * 2
+                user.cash += amount
                 user.save()
                 result = 1
                 win = amount * 2
@@ -165,12 +165,12 @@ new Command({
             break;
         case "half":
             if (value === "1-18" && number >= 1 && number <= 18) {
-                user.cash += amount * 2
+                user.cash += amount
                 user.save()
                 result = 1
                 win = amount * 2
             } else if (value === "19-36" && number >= 19 && number <= 36) {
-                user.cash += amount * 2
+                user.cash += amount
                 user.save()
                 result = 1
                 win = amount * 2
