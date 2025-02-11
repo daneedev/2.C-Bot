@@ -24,7 +24,7 @@
     "dayjs": "^1.11.13",
     "discord-api-types": "^0.37.117",
     "discord-giveaways": "^6.0.1",
-    "discord.js": "^14.17.3",
+    "discord.js": "^14.18.0",
     "dotenv": "^16.4.5",
     "gcommands": "^10.0.0",
     "ms": "^2.1.3",
