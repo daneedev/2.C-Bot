@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/DaneeSkripter/StravaAPI#readme",
   "dependencies": {
-    "@discordjs/rest": "^2.4.3",
+    "@discordjs/rest": "^2.5.1",
     "axios": "^1.9.0",
     "canvas": "^3.1.0",
     "comma-number": "^2.1.0",
